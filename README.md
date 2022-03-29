@@ -34,3 +34,10 @@ You need this API Key to consume the API `https://api.telnyx.com/v2/rooms` to ma
 ### Step 3: Create a Room ID
 
 You should [read this documentation](https://developers.telnyx.com/docs/api/v2/video/Rooms) to learn how to create a new Room ID. When you get your `roomId` you can join a Room.
+
+### Step 4: Add your API key
+
+Navigate to `info.plist` and add the API key you just created by replacing the value for `apiKey`.
+
+![api_key_info_plist](https://user-images.githubusercontent.com/14951672/160592513-01a6f1ec-57af-49d1-b93c-f197317ca0f9.png)
+
