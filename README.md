@@ -1,7 +1,7 @@
 # Telnyx Meet iOS App
 This is an example app built with the [Telnyx Video iOS SDK](https://github.com/team-telnyx/telnyx-video-ios). The code is open source and easy to configure so developers can try out real time video an audio features.
 
-### ![create api key](screenshots/multiple-devices-running-app.png)
+### ![screenshot](screenshots/multiple-devices-running-app.png)
 
 ## Features
 - [x] Real time video conferencing with audio and video
