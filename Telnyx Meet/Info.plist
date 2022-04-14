@@ -21,6 +21,11 @@
 			</array>
 		</dict>
 	</dict>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+		<string>voip</string>
+	</array>
 	<key>apiKey</key>
 	<string>YOUR_API_KEY</string>
 	<key>apiUrl</key>
