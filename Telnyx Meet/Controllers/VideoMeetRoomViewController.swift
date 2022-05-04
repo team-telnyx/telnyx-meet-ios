@@ -35,6 +35,17 @@ class VideoMeetRoomViewController: UIViewController {
     private var localParticipantId: String {
         return room.getState().localParticipantId
     }
+    private lazy var screenShareVideoView: UIView = {
+        #if arch(arm64)
+        // Using metal
+        let renderer = MTLVideoView()
+        renderer.videoContentMode = .scaleAspectFit
+        return renderer
+        #else
+        // Using OpenGLES for the rest
+        return GLVideoView()
+        #endif
+    }()
 
     // MARK: - IBOutlets
 
@@ -75,7 +86,6 @@ class VideoMeetRoomViewController: UIViewController {
         refreshTokenTimer = nil
         screenShareViewController = nil
         participantsViewController = nil
-        VideoRenderer.shared().dispose()
         UIApplication.shared.isIdleTimerDisabled = false
     }
 
@@ -89,6 +99,17 @@ class VideoMeetRoomViewController: UIViewController {
         fullScreenButton.clipsToBounds = true
         screenShareStatsButton.layer.cornerRadius = 17.5
         screenShareStatsButton.clipsToBounds = true
+
+        screenShareView.addSubview(screenShareVideoView)
+        screenShareVideoView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            screenShareVideoView.leadingAnchor.constraint(equalTo: screenShareView.leadingAnchor),
+            screenShareVideoView.topAnchor.constraint(equalTo: screenShareView.topAnchor),
+            screenShareVideoView.trailingAnchor.constraint(equalTo: screenShareView.trailingAnchor),
+            screenShareVideoView.bottomAnchor.constraint(equalTo: screenShareView.bottomAnchor)
+        ])
+        screenShareView.layoutIfNeeded()
+        
         updateMicButton()
         updateCameraButton()
         #if targetEnvironment(simulator)
@@ -547,25 +568,23 @@ class VideoMeetRoomViewController: UIViewController {
 
     private func updateParticipantTalking(participantId: String, streamKey: String) {
         DispatchQueue.main.async {
-            if self.room.isSubscribedTo(streamKey: streamKey, participantId: participantId) {
-                if streamKey == "presentation", self.isScreenShareOn {
-                    // This is audio activity from screen share. Highlight screen share
-                    self.screenShareView.layer.borderWidth = 2
-                    self.screenShareView.layer.borderColor = UIColor.yellow.cgColor
+            if streamKey == "presentation", self.isScreenShareOn {
+                // This is audio activity from screen share. Highlight screen share
+                self.screenShareView.layer.borderWidth = 2
+                self.screenShareView.layer.borderColor = UIColor.yellow.cgColor
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    self.screenShareView.layer.borderWidth = 0
+                    self.screenShareView.layer.borderColor = .none
+                }
 
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        self.screenShareView.layer.borderWidth = 0
-                        self.screenShareView.layer.borderColor = .none
-                    }
-
-                } else if self.isParticipantVisible(participantId: participantId),
-                          let index = self.participantsList.firstIndex(where: { $0.id == participantId }) {
-                    self.participantsColletionView.reloadItems(at: [
-                        IndexPath(item: index, section: 0)
-                    ])
-                    if let cell = self.participantsColletionView.cellForItem(at: IndexPath(item: index, section: 0)) as? VideoMeetParticipantCell {
-                        cell.setTalking()
-                    }
+            } else if self.isParticipantVisible(participantId: participantId),
+                      let index = self.participantsList.firstIndex(where: { $0.id == participantId }) {
+                self.participantsColletionView.reloadItems(at: [
+                    IndexPath(item: index, section: 0)
+                ])
+                if let cell = self.participantsColletionView.cellForItem(at: IndexPath(item: index, section: 0)) as? VideoMeetParticipantCell {
+                    cell.setTalking()
                 }
             }
         }
@@ -627,9 +646,10 @@ class VideoMeetRoomViewController: UIViewController {
                 // Show screen share video
                 if let participantId = self.participantScreenSharing?.id,
                    let stream = self.room.getParticipantStream(participantId: participantId, key: "presentation"),
-                   let videoTrack = stream.videoTrack {
-                    VideoRenderer.shared().renderVideoTrack(videoTrack, in: self.screenShareView)
+                   var renderer = self.screenShareVideoView as? VideoRenderer {
+                    renderer.videoTrack = stream.videoTrack
                 }
+
                 self.screenShareParticipantNameLabel.text = self.participantScreenSharing?.name
             } else {
                 // Dismiss full screen screen share vc if presented
@@ -637,8 +657,8 @@ class VideoMeetRoomViewController: UIViewController {
                     self.screenShareViewController = nil
                 })
                 // Remove screen share video
-                for view in self.screenShareView.subviews {
-                    view.removeFromSuperview()
+                if var renderer = self.screenShareVideoView as? VideoRenderer {
+                    renderer.videoTrack = nil
                 }
                 self.screenShareParticipantNameLabel.text = nil
             }
@@ -728,7 +748,9 @@ class VideoMeetRoomViewController: UIViewController {
         vc.modalTransitionStyle = .crossDissolve
         vc.screenShareParticipantName = participant.name
         present(vc, animated: true, completion: {
-            VideoRenderer.shared().renderVideoTrack(videoTrack, in: vc.streamingView)
+            if var renderer = vc.videoRendererView as? VideoRenderer {
+                renderer.videoTrack = videoTrack
+            }
         })
         screenShareViewController = vc
     }
