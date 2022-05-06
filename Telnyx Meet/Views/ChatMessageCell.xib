@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" restorationIdentifier="ChatMessageCell" id="iN0-l3-epB" customClass="ChatMessageCell" customModule="Telnyx_Meet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="61"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sTf-a7-Wh7">
+                    <rect key="frame" x="4" y="4" width="199" height="53"/>
+                    <subviews>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text="Hello, Hi how are you doing?" translatesAutoresizingMaskIntoConstraints="NO" id="snf-ed-w0C">
+                            <rect key="frame" x="3" y="16" width="193" height="33"/>
+                            <inset key="scrollIndicatorInsets" minX="0.0" minY="-10" maxX="0.0" maxY="0.0"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES" shipmentTrackingNumber="YES" flightNumber="YES" lookupSuggestion="YES"/>
+                        </textView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Guillermo" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="opJ-RC-PvP">
+                            <rect key="frame" x="8" y="4" width="183" height="12"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="10"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.0" green="0.75294117650000003" blue="0.5450980392" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <constraints>
+                        <constraint firstItem="opJ-RC-PvP" firstAttribute="top" secondItem="sTf-a7-Wh7" secondAttribute="top" constant="4" id="5Cw-wW-3Df"/>
+                        <constraint firstItem="snf-ed-w0C" firstAttribute="leading" secondItem="sTf-a7-Wh7" secondAttribute="leading" constant="3" id="GQH-i7-u5Z"/>
+                        <constraint firstAttribute="trailing" secondItem="snf-ed-w0C" secondAttribute="trailing" constant="3" id="PMd-PD-Z8x"/>
+                        <constraint firstAttribute="bottom" secondItem="snf-ed-w0C" secondAttribute="bottom" constant="4" id="b29-Qe-YAz"/>
+                        <constraint firstAttribute="trailing" secondItem="opJ-RC-PvP" secondAttribute="trailing" constant="8" id="hb8-qt-Ove"/>
+                        <constraint firstItem="snf-ed-w0C" firstAttribute="top" secondItem="opJ-RC-PvP" secondAttribute="bottom" id="k0w-st-FNh"/>
+                        <constraint firstItem="opJ-RC-PvP" firstAttribute="leading" secondItem="sTf-a7-Wh7" secondAttribute="leading" constant="8" id="sOb-mc-vvm"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <constraints>
+                <constraint firstItem="sTf-a7-Wh7" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="4" id="0aT-Zr-675"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="sTf-a7-Wh7" secondAttribute="bottom" constant="4" id="P5q-D5-9FZ"/>
+                <constraint firstItem="sTf-a7-Wh7" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="4" id="WBm-Cc-kPi"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="sTf-a7-Wh7" secondAttribute="trailing" constant="4" id="fXs-NQ-QvR"/>
+                <constraint firstItem="sTf-a7-Wh7" firstAttribute="width" relation="lessThanOrEqual" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.8" id="s7t-hI-Npz"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="messageContainerView" destination="sTf-a7-Wh7" id="3w7-Os-EUF"/>
+                <outlet property="messageContainerViewLeadingConstraint" destination="0aT-Zr-675" id="0Gv-xD-o4E"/>
+                <outlet property="messageContainerViewTrailingConstraint" destination="fXs-NQ-QvR" id="hDk-f6-LFK"/>
+                <outlet property="messageTextView" destination="snf-ed-w0C" id="abN-ft-e7f"/>
+                <outlet property="usernameLabel" destination="opJ-RC-PvP" id="RZd-xn-xAq"/>
+            </connections>
+            <point key="canvasLocation" x="133" y="344"/>
+        </view>
+    </objects>
+</document>

@@ -519,15 +519,39 @@ When you get your roomId you can join a Room.</string>
                                         <color key="textColor" red="0.0" green="0.75294117650000003" blue="0.5450980392" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W3E-5o-Vyj" userLabel="Participants">
+                                        <rect key="frame" x="210" y="0.0" width="40" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="40" id="693-CM-gnG"/>
+                                            <constraint firstAttribute="height" constant="60" id="Lny-dm-oh5"/>
+                                        </constraints>
+                                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <state key="normal" image="message.fill" catalog="system"/>
+                                        <connections>
+                                            <action selector="openChat" destination="SGo-K6-aur" eventType="touchUpInside" id="u0b-4O-ZzS"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V1K-99-y11">
+                                        <rect key="frame" x="230" y="15" width="12" height="12"/>
+                                        <color key="backgroundColor" systemColor="systemRedColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="12" id="JuZ-H7-OrX"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.1176470588" green="0.13725490200000001" blue="0.2470588235" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="oHu-B8-1jJ" secondAttribute="trailing" constant="10" id="3lM-mf-xGM"/>
+                                    <constraint firstItem="V1K-99-y11" firstAttribute="leading" secondItem="W3E-5o-Vyj" secondAttribute="leading" constant="20" id="42c-K9-Q9V"/>
+                                    <constraint firstItem="W3E-5o-Vyj" firstAttribute="leading" secondItem="f8x-pS-7lx" secondAttribute="trailing" constant="10" id="7eq-ML-3xp"/>
                                     <constraint firstItem="YNc-lv-sfe" firstAttribute="top" secondItem="ghm-Zb-kfe" secondAttribute="top" id="AF3-cZ-KIA"/>
                                     <constraint firstItem="wde-Pi-BEO" firstAttribute="leading" secondItem="ghm-Zb-kfe" secondAttribute="leading" constant="10" id="AfL-hk-fTA"/>
+                                    <constraint firstItem="V1K-99-y11" firstAttribute="top" secondItem="ghm-Zb-kfe" secondAttribute="top" constant="15" id="BFG-6y-hus"/>
                                     <constraint firstItem="f8x-pS-7lx" firstAttribute="leading" secondItem="Dxe-00-Arw" secondAttribute="trailing" constant="10" id="Hcl-G5-5gY"/>
                                     <constraint firstItem="wde-Pi-BEO" firstAttribute="top" secondItem="ghm-Zb-kfe" secondAttribute="top" id="HjN-49-B87"/>
-                                    <constraint firstItem="oHu-B8-1jJ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="f8x-pS-7lx" secondAttribute="trailing" constant="5" id="JNj-lX-YnL"/>
                                     <constraint firstItem="2BC-iX-Hjc" firstAttribute="leading" secondItem="f8x-pS-7lx" secondAttribute="leading" constant="31" id="KIb-Kn-55F"/>
                                     <constraint firstItem="YNc-lv-sfe" firstAttribute="leading" secondItem="wde-Pi-BEO" secondAttribute="trailing" constant="10" id="OX5-4I-VEa"/>
                                     <constraint firstItem="Dxe-00-Arw" firstAttribute="leading" secondItem="YNc-lv-sfe" secondAttribute="trailing" constant="10" id="PjQ-b6-9Yx"/>
@@ -536,6 +560,8 @@ When you get your roomId you can join a Room.</string>
                                     <constraint firstAttribute="height" constant="94" id="YDx-JY-QHl"/>
                                     <constraint firstItem="oHu-B8-1jJ" firstAttribute="centerY" secondItem="wde-Pi-BEO" secondAttribute="centerY" id="fl6-1J-5Kx"/>
                                     <constraint firstItem="Dxe-00-Arw" firstAttribute="top" secondItem="ghm-Zb-kfe" secondAttribute="top" id="sVn-30-6wC"/>
+                                    <constraint firstItem="oHu-B8-1jJ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="W3E-5o-Vyj" secondAttribute="trailing" constant="5" id="uyv-gR-z1d"/>
+                                    <constraint firstItem="W3E-5o-Vyj" firstAttribute="top" secondItem="ghm-Zb-kfe" secondAttribute="top" id="vMK-KH-mEE"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -571,6 +597,7 @@ When you get your roomId you can join a Room.</string>
                         <outlet property="cameraButton" destination="YNc-lv-sfe" id="2Wb-LK-GR2"/>
                         <outlet property="cameraSwitchButton" destination="Dxe-00-Arw" id="uIY-Xa-62A"/>
                         <outlet property="fullScreenButton" destination="gcv-5K-jKw" id="7LL-u6-Tcf"/>
+                        <outlet property="messagesCountLabel" destination="V1K-99-y11" id="vwX-8g-wFY"/>
                         <outlet property="micButton" destination="wde-Pi-BEO" id="tUL-6F-DBw"/>
                         <outlet property="participantsColletionView" destination="1mD-9u-G4j" id="67G-je-biq"/>
                         <outlet property="participantsCountLabel" destination="2BC-iX-Hjc" id="dbY-gb-ygJ"/>
@@ -797,13 +824,107 @@ When you get your roomId you can join a Room.</string>
             </objects>
             <point key="canvasLocation" x="2213.5999999999999" y="63.546798029556655"/>
         </scene>
+        <!--Chat-->
+        <scene sceneID="WUg-p3-7gk">
+            <objects>
+                <viewController storyboardIdentifier="ChatViewController" id="9Fc-KO-oZT" customClass="ChatViewController" customModule="Telnyx_Meet" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="J89-zN-tMl">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lK1-5q-oPV">
+                                <rect key="frame" x="0.0" y="729" width="375" height="49"/>
+                                <subviews>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="IUI-7w-2qA">
+                                        <rect key="frame" x="8" y="8" width="317" height="33"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="33" id="Myx-0E-RY6"/>
+                                        </constraints>
+                                        <color key="textColor" systemColor="labelColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2n8-qJ-7ov">
+                                        <rect key="frame" x="333" y="7" width="34" height="34"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="34" id="1ag-A3-H88"/>
+                                            <constraint firstAttribute="width" constant="34" id="Cad-5x-1AC"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" image="paperplane.fill" catalog="system" title=""/>
+                                        <connections>
+                                            <action selector="sendMessage" destination="9Fc-KO-oZT" eventType="touchUpInside" id="7fR-F1-GJJ"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Send message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bjh-t5-14Y">
+                                        <rect key="frame" x="13" y="16" width="95" height="17"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <color key="textColor" systemColor="secondaryLabelColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="2n8-qJ-7ov" firstAttribute="leading" secondItem="IUI-7w-2qA" secondAttribute="trailing" constant="8" id="4P5-d6-W3R"/>
+                                    <constraint firstAttribute="bottom" secondItem="IUI-7w-2qA" secondAttribute="bottom" constant="8" id="Ikj-da-BD8"/>
+                                    <constraint firstItem="Bjh-t5-14Y" firstAttribute="leading" secondItem="lK1-5q-oPV" secondAttribute="leading" constant="13" id="Py9-2f-kNZ"/>
+                                    <constraint firstItem="IUI-7w-2qA" firstAttribute="top" secondItem="lK1-5q-oPV" secondAttribute="top" constant="8" id="QKp-oY-a3o"/>
+                                    <constraint firstAttribute="bottom" secondItem="2n8-qJ-7ov" secondAttribute="bottom" constant="8" id="RQq-0U-lBg"/>
+                                    <constraint firstAttribute="trailing" secondItem="2n8-qJ-7ov" secondAttribute="trailing" constant="8" id="c5Y-Mq-blh"/>
+                                    <constraint firstItem="IUI-7w-2qA" firstAttribute="leading" secondItem="lK1-5q-oPV" secondAttribute="leading" constant="8" id="n1X-6O-JYf"/>
+                                    <constraint firstAttribute="bottom" secondItem="Bjh-t5-14Y" secondAttribute="bottom" constant="16" id="wsy-Lf-WGP"/>
+                                </constraints>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="kKw-ZG-ZCo">
+                                <rect key="frame" x="0.0" y="88" width="375" height="641"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="oK0-Oz-b7M"/>
+                        <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="lK1-5q-oPV" firstAttribute="leading" secondItem="oK0-Oz-b7M" secondAttribute="leading" id="Bjq-Jg-NLq"/>
+                            <constraint firstItem="kKw-ZG-ZCo" firstAttribute="top" secondItem="oK0-Oz-b7M" secondAttribute="top" id="C0L-yW-klv"/>
+                            <constraint firstItem="lK1-5q-oPV" firstAttribute="top" secondItem="kKw-ZG-ZCo" secondAttribute="bottom" id="UBK-Us-E3h"/>
+                            <constraint firstItem="oK0-Oz-b7M" firstAttribute="trailing" secondItem="kKw-ZG-ZCo" secondAttribute="trailing" id="YES-1G-2QP"/>
+                            <constraint firstItem="lK1-5q-oPV" firstAttribute="bottom" secondItem="oK0-Oz-b7M" secondAttribute="bottom" id="g3N-vy-tub"/>
+                            <constraint firstItem="kKw-ZG-ZCo" firstAttribute="leading" secondItem="oK0-Oz-b7M" secondAttribute="leading" id="juS-Ay-I4f"/>
+                            <constraint firstItem="lK1-5q-oPV" firstAttribute="trailing" secondItem="oK0-Oz-b7M" secondAttribute="trailing" id="rWv-kS-edn"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Chat" id="CJl-9W-72p">
+                        <barButtonItem key="rightBarButtonItem" title="Close" image="xmark" catalog="system" id="vN1-Qv-x6Q">
+                            <connections>
+                                <action selector="closeBtnAction" destination="9Fc-KO-oZT" id="BqR-tX-7LC"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="inputBar" destination="lK1-5q-oPV" id="zke-82-aZb"/>
+                        <outlet property="inputField" destination="IUI-7w-2qA" id="SaG-Yf-eww"/>
+                        <outlet property="inputFieldHeightConstraint" destination="Myx-0E-RY6" id="q82-jG-5Xm"/>
+                        <outlet property="inputFieldPlaceHolder" destination="Bjh-t5-14Y" id="v8g-FP-eDs"/>
+                        <outlet property="inputViewBottomConstraint" destination="g3N-vy-tub" id="4rC-kx-cXh"/>
+                        <outlet property="sendButton" destination="2n8-qJ-7ov" id="Lfv-0I-Czy"/>
+                        <outlet property="sendButtonTrailingConstraint" destination="c5Y-Mq-blh" id="DLN-Si-lbZ"/>
+                        <outlet property="sendButtonWidthConstraint" destination="Cad-5x-1AC" id="kxG-jN-lF8"/>
+                        <outlet property="tableView" destination="kKw-ZG-ZCo" id="Ale-n8-HOK"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ehp-fO-PKg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="676" y="808"/>
+        </scene>
     </scenes>
     <resources>
         <image name="airplayvideo" catalog="system" width="128" height="98"/>
         <image name="camera.rotate.fill" catalog="system" width="128" height="94"/>
         <image name="chevron.up.circle.fill" catalog="system" width="128" height="121"/>
         <image name="ladybug.fill" catalog="system" width="128" height="128"/>
+        <image name="message.fill" catalog="system" width="128" height="113"/>
         <image name="mic.slash.fill" catalog="system" width="108" height="128"/>
+        <image name="paperplane.fill" catalog="system" width="128" height="118"/>
         <image name="person.3.fill" catalog="system" width="128" height="61"/>
         <image name="video.slash.fill" catalog="system" width="128" height="106"/>
         <image name="viewfinder.circle.fill" catalog="system" width="128" height="121"/>

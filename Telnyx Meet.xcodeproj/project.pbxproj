@@ -41,6 +41,10 @@
 		0453E60527EA6E7500361B18 /* JoinRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0453E5FD27EA6E7500361B18 /* JoinRoomViewController.swift */; };
 		0453E60627EA6E7500361B18 /* ScreenShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0453E5FE27EA6E7500361B18 /* ScreenShareViewController.swift */; };
 		0453E60727EA6E7500361B18 /* VideoMeetRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0453E5FF27EA6E7500361B18 /* VideoMeetRoomViewController.swift */; };
+		0458569D2825473700CC44A5 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0458569C2825473600CC44A5 /* ChatViewController.swift */; };
+		045856A0282547D500CC44A5 /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0458569E282547D500CC44A5 /* ChatMessageCell.swift */; };
+		045856A1282547D500CC44A5 /* ChatMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0458569F282547D500CC44A5 /* ChatMessageCell.xib */; };
+		045856A32825541900CC44A5 /* MessageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045856A22825541900CC44A5 /* MessageItem.swift */; };
 		55883A74A3C0057CC35B51D4 /* Pods_Telnyx_Meet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4799B23054764CC41B96B41 /* Pods_Telnyx_Meet.framework */; };
 /* End PBXBuildFile section */
 
@@ -81,6 +85,10 @@
 		0453E5FD27EA6E7500361B18 /* JoinRoomViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoinRoomViewController.swift; sourceTree = "<group>"; };
 		0453E5FE27EA6E7500361B18 /* ScreenShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenShareViewController.swift; sourceTree = "<group>"; };
 		0453E5FF27EA6E7500361B18 /* VideoMeetRoomViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoMeetRoomViewController.swift; sourceTree = "<group>"; };
+		0458569C2825473600CC44A5 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		0458569E282547D500CC44A5 /* ChatMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
+		0458569F282547D500CC44A5 /* ChatMessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatMessageCell.xib; sourceTree = "<group>"; };
+		045856A22825541900CC44A5 /* MessageItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageItem.swift; sourceTree = "<group>"; };
 		24CC4831990AB8FA8D5A4458 /* Pods-Telnyx Meet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telnyx Meet.release.xcconfig"; path = "Target Support Files/Pods-Telnyx Meet/Pods-Telnyx Meet.release.xcconfig"; sourceTree = "<group>"; };
 		79EA25895CE1A0FA493E238C /* Pods-Telnyx Meet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telnyx Meet.debug.xcconfig"; path = "Target Support Files/Pods-Telnyx Meet/Pods-Telnyx Meet.debug.xcconfig"; sourceTree = "<group>"; };
 		D4799B23054764CC41B96B41 /* Pods_Telnyx_Meet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Telnyx_Meet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -153,6 +161,7 @@
 				0453E5C427E9656700361B18 /* RoomInfo.swift */,
 				0453E5C527E9656700361B18 /* UserTokens.swift */,
 				0453E5C727E9656700361B18 /* Pagination.swift */,
+				045856A22825541900CC44A5 /* MessageItem.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -196,6 +205,8 @@
 				0453E5EA27EA6E6E00361B18 /* VideoMeetParticipantCell.xib */,
 				0453E5EC27EA6E6E00361B18 /* VideoMeetRoomCell.swift */,
 				0453E5E427EA6E6E00361B18 /* VideoMeetRoomCell.xib */,
+				0458569E282547D500CC44A5 /* ChatMessageCell.swift */,
+				0458569F282547D500CC44A5 /* ChatMessageCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -210,6 +221,7 @@
 				0453E5FE27EA6E7500361B18 /* ScreenShareViewController.swift */,
 				0453E5FB27EA6E7500361B18 /* StatsViewController.swift */,
 				04171318281ADFB4009C5B03 /* ReportIssueViewController.swift */,
+				0458569C2825473600CC44A5 /* ChatViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -294,6 +306,7 @@
 				0453E5B227E9613200361B18 /* LaunchScreen.storyboard in Resources */,
 				0453E5E027EA6E0500361B18 /* telnyx.mp4 in Resources */,
 				0453E5AF27E9613200361B18 /* Assets.xcassets in Resources */,
+				045856A1282547D500CC44A5 /* ChatMessageCell.xib in Resources */,
 				0453E5AD27E9612F00361B18 /* Main.storyboard in Resources */,
 				0453E5F427EA6E6E00361B18 /* VideoMeetParticipantCell.xib in Resources */,
 				0453E5EE27EA6E6E00361B18 /* VideoMeetRoomCell.xib in Resources */,
@@ -350,6 +363,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0453E5C827E9656700361B18 /* GetAllRoomsResponse.swift in Sources */,
+				045856A32825541900CC44A5 /* MessageItem.swift in Sources */,
 				0453E60627EA6E7500361B18 /* ScreenShareViewController.swift in Sources */,
 				0453E5D727EA6DEB00361B18 /* RoomExtension.swift in Sources */,
 				0453E60527EA6E7500361B18 /* JoinRoomViewController.swift in Sources */,
@@ -370,12 +384,14 @@
 				0453E5CC27E9656700361B18 /* Pagination.swift in Sources */,
 				0453E5F627EA6E6E00361B18 /* VideoMeetRoomCell.swift in Sources */,
 				0453E5F027EA6E6E00361B18 /* CopyableUILabel.swift in Sources */,
+				045856A0282547D500CC44A5 /* ChatMessageCell.swift in Sources */,
 				0453E5C927E9656700361B18 /* RoomInfo.swift in Sources */,
 				0453E5DD27EA6DEB00361B18 /* StoryboardExtension.swift in Sources */,
 				0453E5F227EA6E6E00361B18 /* ParticipantListCell.swift in Sources */,
 				0453E60427EA6E7500361B18 /* VideoMeetRoomsListViewController.swift in Sources */,
 				0453E60327EA6E7500361B18 /* StatsViewController.swift in Sources */,
 				0453E5C027E9651300361B18 /* RoomsAPIService.swift in Sources */,
+				0458569D2825473700CC44A5 /* ChatViewController.swift in Sources */,
 				0442214127F49309001EE519 /* ErrorResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

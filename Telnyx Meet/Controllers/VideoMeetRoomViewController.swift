@@ -46,6 +46,19 @@ class VideoMeetRoomViewController: UIViewController {
         return GLVideoView()
         #endif
     }()
+    private var messages = [MessageItem]()
+    private var unreadMessagesCount: Int = 0 {
+        didSet {
+            DispatchQueue.main.async {
+                self.messagesCountLabel.isHidden = self.unreadMessagesCount == 0
+                self.messagesCountLabel.text = "\(self.unreadMessagesCount)"
+                // animate new messages count
+                if self.unreadMessagesCount > 0 {
+                    self.animateNewMessagesCount()
+                }
+            }
+        }
+    }
 
     // MARK: - IBOutlets
 
@@ -64,6 +77,7 @@ class VideoMeetRoomViewController: UIViewController {
     @IBOutlet private weak var screenShareParticipantNameLabel: UILabel!
     @IBOutlet private weak var participantsCountLabel: UILabel!
     @IBOutlet private weak var roomId: UILabel!
+    @IBOutlet private weak var messagesCountLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -109,7 +123,13 @@ class VideoMeetRoomViewController: UIViewController {
             screenShareVideoView.bottomAnchor.constraint(equalTo: screenShareView.bottomAnchor)
         ])
         screenShareView.layoutIfNeeded()
-        
+
+        messagesCountLabel.text = nil
+        messagesCountLabel.isHidden = true
+        messagesCountLabel.clipsToBounds = true
+        messagesCountLabel.textAlignment = .center
+        messagesCountLabel.layer.cornerRadius = 6
+
         updateMicButton()
         updateCameraButton()
         #if targetEnvironment(simulator)
@@ -410,6 +430,13 @@ class VideoMeetRoomViewController: UIViewController {
             }
         }
 
+        room.onMessageReceived = { [weak self] participantId, message, _ in
+            guard let self = self else { return }
+            let messageItem = MessageItem(sender: participantId, message: message)
+            self.messages.append(messageItem)
+            self.newMessageReceived(message: messageItem)
+        }
+
         room.connect { [weak self] status in
             guard let self = self else { return }
             if status == .connected, let localParticipant = try? self.room.getLocalParticipant() {
@@ -425,6 +452,39 @@ class VideoMeetRoomViewController: UIViewController {
                 self.publishLocalStream(audio: true, video: true)
             }
         }
+    }
+
+    private func newMessageReceived(message: MessageItem) {
+        DispatchQueue.main.async {
+            self.chatViewController?.addMessage(message)
+            if self.chatViewController != nil {
+                // User is on chat screen
+                return
+            }
+            // User is not on the chat screen
+            // so we need to update the count of unread messages
+            self.unreadMessagesCount += 1
+        }
+    }
+
+    private func animateNewMessagesCount() {
+        let layer = messagesCountLabel.layer
+
+        // remove previous animation
+        layer.removeAnimation(forKey: "scale")
+
+        CATransaction.begin()
+        CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: .easeInEaseOut))
+
+        let scaleAnimation = CABasicAnimation(keyPath: "transform.scale")
+        scaleAnimation.duration = 0.3
+        scaleAnimation.toValue = 1.5
+        scaleAnimation.autoreverses = true
+
+        // add scale animation
+        layer.add(scaleAnimation, forKey: "scale")
+
+        CATransaction.commit()
     }
 
     private func showErrorAlert(errorMessage: String) {
@@ -741,6 +801,21 @@ class VideoMeetRoomViewController: UIViewController {
                 cell.flipCamera(mirror: mirror)
             }
         }
+    }
+
+    private weak var chatViewController: ChatViewController?
+    @IBAction private func openChat() {
+        guard let vc = storyboard?.viewController(of: ChatViewController.self) else {
+            return
+        }
+        vc.room = room
+        vc.setMessages(messages: self.messages)
+        let nc = UINavigationController(rootViewController: vc)
+        nc.modalPresentationStyle = .fullScreen
+        present(nc, animated: true, completion: nil)
+        chatViewController = vc
+        // User is opening chat screen, clear unread messages count
+        unreadMessagesCount = 0
     }
 
     private weak var participantsViewController: ParticipantsViewController?
