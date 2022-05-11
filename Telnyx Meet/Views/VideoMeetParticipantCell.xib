@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -22,7 +22,7 @@
                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" alpha="0.84999999999999998" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Participant name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="29o-K9-SKL">
-                            <rect key="frame" x="5" y="5" width="96" height="14.5"/>
+                            <rect key="frame" x="5" y="5" width="95.5" height="14.5"/>
                             <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -41,24 +41,29 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.80000000000000004" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mic.slash.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="tRX-MC-nPK">
-                            <rect key="frame" x="5" y="159.5" width="25" height="25"/>
-                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <color key="tintColor" systemColor="systemPinkColor"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="25" id="iEn-Kb-cH1"/>
-                                <constraint firstAttribute="width" constant="25" id="zOc-ip-sih"/>
-                            </constraints>
-                        </imageView>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.80000001192092896" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="speaker.slash.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="yH3-oT-mWH" userLabel="Audio censored">
-                            <rect key="frame" x="35" y="159.5" width="25" height="25"/>
-                            <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <color key="tintColor" systemColor="systemPinkColor"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="25" id="15b-NG-7X5"/>
-                                <constraint firstAttribute="height" constant="27" id="TZB-iW-hWG"/>
-                            </constraints>
-                        </imageView>
+                        <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="jMk-id-hbX">
+                            <rect key="frame" x="5" y="160" width="55" height="25"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.80000000000000004" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mic.slash.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="tRX-MC-nPK">
+                                    <rect key="frame" x="0.0" y="-0.5" width="25" height="25"/>
+                                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="tintColor" systemColor="systemPinkColor"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="25" id="iEn-Kb-cH1"/>
+                                        <constraint firstAttribute="width" constant="25" id="zOc-ip-sih"/>
+                                    </constraints>
+                                </imageView>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.80000001192092896" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="speaker.slash.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="yH3-oT-mWH" userLabel="Audio censored">
+                                    <rect key="frame" x="30" y="1.5" width="25" height="23"/>
+                                    <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="tintColor" systemColor="systemPinkColor"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="25" id="15b-NG-7X5"/>
+                                        <constraint firstAttribute="height" constant="27" id="TZB-iW-hWG"/>
+                                    </constraints>
+                                </imageView>
+                            </subviews>
+                        </stackView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
@@ -68,17 +73,15 @@
                         <constraint firstAttribute="trailing" secondItem="xbF-jL-WL1" secondAttribute="trailing" id="KGn-Wt-OfY"/>
                         <constraint firstItem="29o-K9-SKL" firstAttribute="top" secondItem="QXR-8C-mt5" secondAttribute="top" constant="5" id="LtV-Py-wYW"/>
                         <constraint firstItem="nSN-bh-sW6" firstAttribute="leading" secondItem="QXR-8C-mt5" secondAttribute="leading" constant="10" id="LwS-RA-tyG"/>
-                        <constraint firstAttribute="bottom" secondItem="yH3-oT-mWH" secondAttribute="bottom" constant="5" id="NUf-d9-Reu"/>
-                        <constraint firstItem="tRX-MC-nPK" firstAttribute="leading" secondItem="QXR-8C-mt5" secondAttribute="leading" constant="5" id="Nvb-8N-z6U"/>
                         <constraint firstItem="xbF-jL-WL1" firstAttribute="top" secondItem="QXR-8C-mt5" secondAttribute="top" id="S8c-fr-ooR"/>
                         <constraint firstItem="xbF-jL-WL1" firstAttribute="leading" secondItem="QXR-8C-mt5" secondAttribute="leading" id="Yng-m9-ntS"/>
                         <constraint firstAttribute="bottom" secondItem="xbF-jL-WL1" secondAttribute="bottom" id="cE6-KR-N3N"/>
+                        <constraint firstAttribute="bottom" secondItem="jMk-id-hbX" secondAttribute="bottom" constant="5" id="j7n-b9-bo7"/>
+                        <constraint firstItem="jMk-id-hbX" firstAttribute="leading" secondItem="QXR-8C-mt5" secondAttribute="leading" constant="5" id="kF0-N7-S7s"/>
                         <constraint firstItem="nSN-bh-sW6" firstAttribute="centerX" secondItem="QXR-8C-mt5" secondAttribute="centerX" id="lNx-QU-sKf"/>
                         <constraint firstAttribute="trailing" secondItem="nSN-bh-sW6" secondAttribute="trailing" constant="10" id="oE3-O4-220"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="29o-K9-SKL" secondAttribute="trailing" constant="5" id="tYm-Ex-yRK"/>
-                        <constraint firstAttribute="bottom" secondItem="tRX-MC-nPK" secondAttribute="bottom" constant="5" id="vWd-Hq-WuT"/>
                         <constraint firstItem="29o-K9-SKL" firstAttribute="leading" secondItem="QXR-8C-mt5" secondAttribute="leading" constant="5" id="wgq-Sb-134"/>
-                        <constraint firstItem="yH3-oT-mWH" firstAttribute="leading" secondItem="tRX-MC-nPK" secondAttribute="trailing" constant="5" id="zKY-7j-xgH"/>
                     </constraints>
                 </view>
             </subviews>
@@ -98,9 +101,7 @@
             <connections>
                 <outlet property="audioCensoredView" destination="yH3-oT-mWH" id="KnP-St-sSt"/>
                 <outlet property="bigUserName" destination="nSN-bh-sW6" id="epf-Hh-xTf"/>
-                <outlet property="microphoneLeadingConstraint" destination="Nvb-8N-z6U" id="6Pe-sv-kMg"/>
                 <outlet property="microphoneView" destination="tRX-MC-nPK" id="PqV-R6-zGb"/>
-                <outlet property="microphoneWidthConstraint" destination="zOc-ip-sih" id="fY9-32-0W5"/>
                 <outlet property="streamingView" destination="xbF-jL-WL1" id="qw1-E1-N3t"/>
                 <outlet property="userId" destination="iOO-Bj-JdU" id="iVD-Vk-i1p"/>
                 <outlet property="userName" destination="29o-K9-SKL" id="aDt-hr-x58"/>
