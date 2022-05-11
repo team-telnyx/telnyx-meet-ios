@@ -265,10 +265,11 @@ class VideoMeetRoomViewController: UIViewController {
         guard let clientToken = userToken?.token else {
             return
         }
-        let username = participantName.isEmpty ? "User from iOS" : participantName
-        let context: [String: AnyCodable] = ["id": "429759", "username": AnyCodable(username)]
 
-        Room.createRoom(id: roomInfo.id, clientToken: clientToken, context: context) { [weak self] room in
+        let username = participantName.isEmpty ? "User from iOS" : participantName
+        let context: JSONObject = ["id": "429759", "username": username]
+
+        Room.createRoom(id: roomInfo.id, clientToken: clientToken, context: context, enableMessages: true) { [weak self] room in
             guard let self = self else { return }
             self.room = room
         }
@@ -687,8 +688,24 @@ class VideoMeetRoomViewController: UIViewController {
         present(vc, animated: true, completion: nil)
     }
 
+    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        if motion == .motionShake {
+            onReportIssueButton()
+        }
+    }
+
     // MARK: - IBActions
 
+    @IBAction private func onReportIssueButton() {
+        guard let vc = storyboard?.viewController(of: ReportIssueViewController.self) else {
+            return
+        }
+        vc.room = room
+        vc.modalTransitionStyle = .crossDissolve
+        vc.modalPresentationStyle = .overFullScreen
+        present(vc, animated: true, completion: nil)
+    }
+    
     @IBAction private func onLeaveButton() {
         if self.room.status == .connected {
             self.room.disconnect { [weak self] in

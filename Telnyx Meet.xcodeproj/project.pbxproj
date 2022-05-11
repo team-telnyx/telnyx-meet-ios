@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04171319281ADFB4009C5B03 /* ReportIssueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04171318281ADFB4009C5B03 /* ReportIssueViewController.swift */; };
 		0442214127F49309001EE519 /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0442214027F49309001EE519 /* ErrorResponse.swift */; };
 		0453E5A627E9612F00361B18 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0453E5A527E9612F00361B18 /* AppDelegate.swift */; };
 		0453E5A827E9612F00361B18 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0453E5A727E9612F00361B18 /* SceneDelegate.swift */; };
@@ -23,7 +24,6 @@
 		0453E5CC27E9656700361B18 /* Pagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0453E5C727E9656700361B18 /* Pagination.swift */; };
 		0453E5D627EA6DEB00361B18 /* NavigationBarStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0453E5CE27EA6DEB00361B18 /* NavigationBarStyle.swift */; };
 		0453E5D727EA6DEB00361B18 /* RoomExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0453E5CF27EA6DEB00361B18 /* RoomExtension.swift */; };
-		0453E5D927EA6DEB00361B18 /* JsonUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0453E5D127EA6DEB00361B18 /* JsonUtils.swift */; };
 		0453E5DA27EA6DEB00361B18 /* DateUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0453E5D227EA6DEB00361B18 /* DateUtils.swift */; };
 		0453E5DB27EA6DEB00361B18 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0453E5D327EA6DEB00361B18 /* ColorExtension.swift */; };
 		0453E5DC27EA6DEB00361B18 /* ParticipantExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0453E5D427EA6DEB00361B18 /* ParticipantExtension.swift */; };
@@ -41,10 +41,11 @@
 		0453E60527EA6E7500361B18 /* JoinRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0453E5FD27EA6E7500361B18 /* JoinRoomViewController.swift */; };
 		0453E60627EA6E7500361B18 /* ScreenShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0453E5FE27EA6E7500361B18 /* ScreenShareViewController.swift */; };
 		0453E60727EA6E7500361B18 /* VideoMeetRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0453E5FF27EA6E7500361B18 /* VideoMeetRoomViewController.swift */; };
-		B67F1EC65FD3DE8803DBB805 /* Pods_Telnyx_Meet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A62431DE30ABDD2BD282EE52 /* Pods_Telnyx_Meet.framework */; };
+		55883A74A3C0057CC35B51D4 /* Pods_Telnyx_Meet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4799B23054764CC41B96B41 /* Pods_Telnyx_Meet.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		04171318281ADFB4009C5B03 /* ReportIssueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportIssueViewController.swift; sourceTree = "<group>"; };
 		0442214027F49309001EE519 /* ErrorResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
 		0453E5A227E9612F00361B18 /* Telnyx Meet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Telnyx Meet.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0453E5A527E9612F00361B18 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -63,7 +64,6 @@
 		0453E5C727E9656700361B18 /* Pagination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pagination.swift; sourceTree = "<group>"; };
 		0453E5CE27EA6DEB00361B18 /* NavigationBarStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBarStyle.swift; sourceTree = "<group>"; };
 		0453E5CF27EA6DEB00361B18 /* RoomExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomExtension.swift; sourceTree = "<group>"; };
-		0453E5D127EA6DEB00361B18 /* JsonUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonUtils.swift; sourceTree = "<group>"; };
 		0453E5D227EA6DEB00361B18 /* DateUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateUtils.swift; sourceTree = "<group>"; };
 		0453E5D327EA6DEB00361B18 /* ColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		0453E5D427EA6DEB00361B18 /* ParticipantExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticipantExtension.swift; sourceTree = "<group>"; };
@@ -81,9 +81,9 @@
 		0453E5FD27EA6E7500361B18 /* JoinRoomViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoinRoomViewController.swift; sourceTree = "<group>"; };
 		0453E5FE27EA6E7500361B18 /* ScreenShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenShareViewController.swift; sourceTree = "<group>"; };
 		0453E5FF27EA6E7500361B18 /* VideoMeetRoomViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoMeetRoomViewController.swift; sourceTree = "<group>"; };
-		88FBFF9726FC9CEA6F5F4FA9 /* Pods-Telnyx Meet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telnyx Meet.release.xcconfig"; path = "Target Support Files/Pods-Telnyx Meet/Pods-Telnyx Meet.release.xcconfig"; sourceTree = "<group>"; };
-		A62431DE30ABDD2BD282EE52 /* Pods_Telnyx_Meet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Telnyx_Meet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D4C4F6F214E16F945B7D7B88 /* Pods-Telnyx Meet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telnyx Meet.debug.xcconfig"; path = "Target Support Files/Pods-Telnyx Meet/Pods-Telnyx Meet.debug.xcconfig"; sourceTree = "<group>"; };
+		24CC4831990AB8FA8D5A4458 /* Pods-Telnyx Meet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telnyx Meet.release.xcconfig"; path = "Target Support Files/Pods-Telnyx Meet/Pods-Telnyx Meet.release.xcconfig"; sourceTree = "<group>"; };
+		79EA25895CE1A0FA493E238C /* Pods-Telnyx Meet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telnyx Meet.debug.xcconfig"; path = "Target Support Files/Pods-Telnyx Meet/Pods-Telnyx Meet.debug.xcconfig"; sourceTree = "<group>"; };
+		D4799B23054764CC41B96B41 /* Pods_Telnyx_Meet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Telnyx_Meet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,7 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B67F1EC65FD3DE8803DBB805 /* Pods_Telnyx_Meet.framework in Frameworks */,
+				55883A74A3C0057CC35B51D4 /* Pods_Telnyx_Meet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,7 +104,7 @@
 				0453E5A427E9612F00361B18 /* Telnyx Meet */,
 				0453E5A327E9612F00361B18 /* Products */,
 				E2FBB6CB710EEC778DC23D63 /* Pods */,
-				F3E2D42343175F3BAF15074E /* Frameworks */,
+				3984DBE129AB5F747BA15231 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -162,7 +162,6 @@
 			children = (
 				0453E5CE27EA6DEB00361B18 /* NavigationBarStyle.swift */,
 				0453E5CF27EA6DEB00361B18 /* RoomExtension.swift */,
-				0453E5D127EA6DEB00361B18 /* JsonUtils.swift */,
 				0453E5D227EA6DEB00361B18 /* DateUtils.swift */,
 				0453E5D327EA6DEB00361B18 /* ColorExtension.swift */,
 				0453E5D427EA6DEB00361B18 /* ParticipantExtension.swift */,
@@ -210,25 +209,26 @@
 				0453E5FA27EA6E7500361B18 /* ParticipantsViewController.swift */,
 				0453E5FE27EA6E7500361B18 /* ScreenShareViewController.swift */,
 				0453E5FB27EA6E7500361B18 /* StatsViewController.swift */,
+				04171318281ADFB4009C5B03 /* ReportIssueViewController.swift */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		3984DBE129AB5F747BA15231 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D4799B23054764CC41B96B41 /* Pods_Telnyx_Meet.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		E2FBB6CB710EEC778DC23D63 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				D4C4F6F214E16F945B7D7B88 /* Pods-Telnyx Meet.debug.xcconfig */,
-				88FBFF9726FC9CEA6F5F4FA9 /* Pods-Telnyx Meet.release.xcconfig */,
+				79EA25895CE1A0FA493E238C /* Pods-Telnyx Meet.debug.xcconfig */,
+				24CC4831990AB8FA8D5A4458 /* Pods-Telnyx Meet.release.xcconfig */,
 			);
 			path = Pods;
-			sourceTree = "<group>";
-		};
-		F3E2D42343175F3BAF15074E /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				A62431DE30ABDD2BD282EE52 /* Pods_Telnyx_Meet.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -238,11 +238,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0453E5B627E9613200361B18 /* Build configuration list for PBXNativeTarget "Telnyx Meet" */;
 			buildPhases = (
-				9A45AE891D4B11EAFA9F4E7E /* [CP] Check Pods Manifest.lock */,
+				0BD9A7C561E3934F03C30F71 /* [CP] Check Pods Manifest.lock */,
 				0453E59E27E9612F00361B18 /* Sources */,
 				0453E59F27E9612F00361B18 /* Frameworks */,
 				0453E5A027E9612F00361B18 /* Resources */,
-				E6E77FB0E9C1ED344110187A /* [CP] Embed Pods Frameworks */,
+				F8AC62627C541654DB3675FD /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -303,7 +303,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		9A45AE891D4B11EAFA9F4E7E /* [CP] Check Pods Manifest.lock */ = {
+		0BD9A7C561E3934F03C30F71 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -325,7 +325,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E6E77FB0E9C1ED344110187A /* [CP] Embed Pods Frameworks */ = {
+		F8AC62627C541654DB3675FD /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -355,7 +355,6 @@
 				0453E60527EA6E7500361B18 /* JoinRoomViewController.swift in Sources */,
 				0453E5DB27EA6DEB00361B18 /* ColorExtension.swift in Sources */,
 				0453E5CA27E9656700361B18 /* UserTokens.swift in Sources */,
-				0453E5D927EA6DEB00361B18 /* JsonUtils.swift in Sources */,
 				0453E5C127E9651300361B18 /* APIRequest.swift in Sources */,
 				0453E5BF27E9651300361B18 /* APIService.swift in Sources */,
 				0453E5BE27E9651300361B18 /* APIError.swift in Sources */,
@@ -365,6 +364,7 @@
 				0453E5A827E9612F00361B18 /* SceneDelegate.swift in Sources */,
 				0453E5D627EA6DEB00361B18 /* NavigationBarStyle.swift in Sources */,
 				0453E5DC27EA6DEB00361B18 /* ParticipantExtension.swift in Sources */,
+				04171319281ADFB4009C5B03 /* ReportIssueViewController.swift in Sources */,
 				0453E60727EA6E7500361B18 /* VideoMeetRoomViewController.swift in Sources */,
 				0453E5DA27EA6DEB00361B18 /* DateUtils.swift in Sources */,
 				0453E5CC27E9656700361B18 /* Pagination.swift in Sources */,
@@ -520,7 +520,7 @@
 		};
 		0453E5B727E9613200361B18 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D4C4F6F214E16F945B7D7B88 /* Pods-Telnyx Meet.debug.xcconfig */;
+			baseConfigurationReference = 79EA25895CE1A0FA493E238C /* Pods-Telnyx Meet.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -555,7 +555,7 @@
 		};
 		0453E5B827E9613200361B18 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 88FBFF9726FC9CEA6F5F4FA9 /* Pods-Telnyx Meet.release.xcconfig */;
+			baseConfigurationReference = 24CC4831990AB8FA8D5A4458 /* Pods-Telnyx Meet.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
