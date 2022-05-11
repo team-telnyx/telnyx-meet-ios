@@ -314,6 +314,22 @@ class VideoMeetRoomViewController: UIViewController {
             self.participantJoined(participantId: participantId)
         }
 
+        room.onParticipantLeaving = { [weak self] participantId, reason in
+            guard let self = self else { return }
+
+            if reason == .kicked {
+                DispatchQueue.main.async {
+                    if participantId == self.localParticipantId {
+                        self.showErrorAlert(title:"Oops! 😮" ,errorMessage: "You have been kicked out! 🦶")
+                    } else {
+                        if let participant = self.room.state.participants[participantId] {
+                            self.showToast(message: "⚠️ \(participant.name) has been kicked out! 🦶", seconds: 3.0)
+                        }
+                    }
+                }
+            }
+        }
+
         room.onParticipantLeft = { [weak self] participantId in
             guard let self = self else { return }
             self.visibleParticipants.removeAll(where: { $0 == participantId })
@@ -375,14 +391,9 @@ class VideoMeetRoomViewController: UIViewController {
             }
         }
 
-        room.onStreamAudioActivity = { [weak self] participantId, streamKey in
+        room.onAudioActivity = { [weak self] participantId, streamKey in
             guard let self = self else { return }
             self.updateParticipantTalking(participantId: participantId, streamKey: streamKey ?? "")
-        }
-
-        room.onParticipantAudioActivity = { [weak self] participantId in
-            guard let self = self else { return }
-            self.updateParticipantTalking(participantId: participantId, streamKey: "")
         }
 
         room.onSubscriptionStarted = { [weak self] participantId, streamKey in
@@ -428,6 +439,23 @@ class VideoMeetRoomViewController: UIViewController {
             } else {
                 self.updateParticipant(participantId: participantId)
             }
+        }
+
+        // Triggered by Moderator API - mute action
+        room.onTrackCensored = { [weak self] participantId, streamKey, kind in
+            guard let self = self else { return }
+            self.showAudioModeratorAlert(participantId: participantId, streamKey: streamKey, kind: kind, isCensored: true)
+            self.updateParticipant(participantId: participantId)
+            DispatchQueue.main.async {
+                self.participantsColletionView.reloadData()
+            }
+        }
+
+        // Triggered by Moderator API - unmute action
+        room.onTrackUncensored = { [weak self] participantId, streamKey, kind in
+            guard let self = self else { return }
+            self.showAudioModeratorAlert(participantId: participantId, streamKey: streamKey, kind: kind, isCensored: false)
+            self.updateParticipant(participantId: participantId)
         }
 
         room.onMessageReceived = { [weak self] participantId, message, _ in
@@ -487,12 +515,24 @@ class VideoMeetRoomViewController: UIViewController {
         CATransaction.commit()
     }
 
-    private func showErrorAlert(errorMessage: String) {
-        let alert = UIAlertController(title: "Error", message: errorMessage, preferredStyle: .alert)
+    private func showErrorAlert(title: String = "Error", errorMessage: String) {
+        let alert = UIAlertController(title: title, message: errorMessage, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {_ in
             self.onLeaveButton()
         }))
         present(alert, animated: true, completion: nil)
+    }
+
+    private func showAudioModeratorAlert(participantId: ParticipantId, streamKey: StreamKey, kind: String, isCensored: Bool) {
+        DispatchQueue.main.async {
+            if participantId == self.localParticipantId {
+                self.showToast(message: "⚠️ Your \(kind) from \"\(streamKey)\" stream has been \(isCensored ? "censored" : "uncensored") by the moderator", seconds: 5.0)
+            } else {
+                if let participant = self.room.state.participants[participantId] {
+                    self.showToast(message: "⚠️ \(participant.name)'s \(kind) from \"\(streamKey)\" stream has been \(isCensored ? "censored" : "uncensored") by the moderator", seconds: 5.0)
+                }
+            }
+        }
     }
 
     private func publishLocalStream(audio: Bool, video: Bool) {

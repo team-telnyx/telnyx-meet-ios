@@ -45,6 +45,7 @@
 		045856A0282547D500CC44A5 /* ChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0458569E282547D500CC44A5 /* ChatMessageCell.swift */; };
 		045856A1282547D500CC44A5 /* ChatMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0458569F282547D500CC44A5 /* ChatMessageCell.xib */; };
 		045856A32825541900CC44A5 /* MessageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045856A22825541900CC44A5 /* MessageItem.swift */; };
+		048B2F56282C0ABA00D75EDC /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048B2F55282C0ABA00D75EDC /* UIViewControllerExtension.swift */; };
 		55883A74A3C0057CC35B51D4 /* Pods_Telnyx_Meet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4799B23054764CC41B96B41 /* Pods_Telnyx_Meet.framework */; };
 /* End PBXBuildFile section */
 
@@ -89,6 +90,7 @@
 		0458569E282547D500CC44A5 /* ChatMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageCell.swift; sourceTree = "<group>"; };
 		0458569F282547D500CC44A5 /* ChatMessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatMessageCell.xib; sourceTree = "<group>"; };
 		045856A22825541900CC44A5 /* MessageItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageItem.swift; sourceTree = "<group>"; };
+		048B2F55282C0ABA00D75EDC /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		24CC4831990AB8FA8D5A4458 /* Pods-Telnyx Meet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telnyx Meet.release.xcconfig"; path = "Target Support Files/Pods-Telnyx Meet/Pods-Telnyx Meet.release.xcconfig"; sourceTree = "<group>"; };
 		79EA25895CE1A0FA493E238C /* Pods-Telnyx Meet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telnyx Meet.debug.xcconfig"; path = "Target Support Files/Pods-Telnyx Meet/Pods-Telnyx Meet.debug.xcconfig"; sourceTree = "<group>"; };
 		D4799B23054764CC41B96B41 /* Pods_Telnyx_Meet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Telnyx_Meet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -175,6 +177,7 @@
 				0453E5D327EA6DEB00361B18 /* ColorExtension.swift */,
 				0453E5D427EA6DEB00361B18 /* ParticipantExtension.swift */,
 				0453E5D527EA6DEB00361B18 /* StoryboardExtension.swift */,
+				048B2F55282C0ABA00D75EDC /* UIViewControllerExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -382,6 +385,7 @@
 				0453E60727EA6E7500361B18 /* VideoMeetRoomViewController.swift in Sources */,
 				0453E5DA27EA6DEB00361B18 /* DateUtils.swift in Sources */,
 				0453E5CC27E9656700361B18 /* Pagination.swift in Sources */,
+				048B2F56282C0ABA00D75EDC /* UIViewControllerExtension.swift in Sources */,
 				0453E5F627EA6E6E00361B18 /* VideoMeetRoomCell.swift in Sources */,
 				0453E5F027EA6E6E00361B18 /* CopyableUILabel.swift in Sources */,
 				045856A0282547D500CC44A5 /* ChatMessageCell.swift in Sources */,
