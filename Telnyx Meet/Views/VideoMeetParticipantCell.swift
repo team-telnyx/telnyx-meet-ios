@@ -9,6 +9,7 @@ class VideoMeetParticipantCell : UICollectionViewCell {
     @IBOutlet private weak var bigUserName: UILabel!
     @IBOutlet private weak var userId: UILabel!
     @IBOutlet private weak var microphoneView: UIImageView!
+    @IBOutlet private weak var audioCensoredView: UIImageView!
 
     private lazy var videoRendererView: UIView = {
         #if arch(arm64)
@@ -68,10 +69,11 @@ class VideoMeetParticipantCell : UICollectionViewCell {
         bigUserName.text = participant.name
 
         startRenderingVideo(videoTrack: stream?.videoTrack)
-        streamingView.transform = mirrorVideo ? CGAffineTransform.identity : CGAffineTransform(scaleX: -1, y: 1)
+        streamingView.transform = mirrorVideo ? CGAffineTransform(scaleX: -1, y: 1) : CGAffineTransform.identity
 
         setVideoActive(isVideoActive: stream?.isVideoEnabled ?? false)
         setMicrophoneActive(isAudioEnabled: stream?.isAudioEnabled ?? false)
+        setAudioCensored(isAudioCensored: stream?.isAudioCensored ?? false)
     }
 
     func flipCamera(mirror: Bool) {
@@ -90,7 +92,15 @@ class VideoMeetParticipantCell : UICollectionViewCell {
             self?.layer.borderColor = .none
         }
     }
+    
+    private func setAudioCensored(isAudioCensored: Bool) {
+        self.audioCensoredView.isHidden = !isAudioCensored
+    }
 
     override func prepareForReuse() {
+        if var renderer = videoRendererView as? VideoRenderer {
+            renderer.videoTrack = nil
+        }
+        super.prepareForReuse()
     }
 }
