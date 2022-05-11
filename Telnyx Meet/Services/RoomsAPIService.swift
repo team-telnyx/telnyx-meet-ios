@@ -24,7 +24,7 @@ class RoomsAPIService : APIService {
 
     func getAllRooms(completion: @escaping  ([RoomInfo]?, APIError?) -> Void) {
         var header = [String: String]()
-        header["Authorization"] = API_KEY
+        header["Authorization"] = "Bearer \(API_KEY)"
 
         // Recommendation for the consumers to implement paging for a better performance
         // If you
@@ -59,7 +59,7 @@ class RoomsAPIService : APIService {
 
     func getRoom(roomID: String, completion: @escaping  (RoomInfo?, APIError?) -> Void) {
         var header = [String: String]()
-        header["Authorization"] = API_KEY
+        header["Authorization"] = "Bearer \(API_KEY)"
 
         let endpoint = baseURL + "rooms" + "/\(roomID)"
         self.request(url: endpoint,
@@ -91,7 +91,7 @@ class RoomsAPIService : APIService {
 
     func createClientToken(roomID: String, completion: @escaping  (UserTokens?, APIError?) -> Void) {
         var header = [String: String]()
-        header["Authorization"] = API_KEY
+        header["Authorization"] = "Bearer \(API_KEY)"
         header["Content-Type"] = "application/json"
         header["Accept"] = "application/json"
 
@@ -125,7 +125,7 @@ class RoomsAPIService : APIService {
                             refreshToken: String,
                             completion: @escaping  (UserTokens?, APIError?) -> Void) {
         var header = [String: String]()
-        header["Authorization"] = API_KEY
+        header["Authorization"] = "Bearer \(API_KEY)"
         header["Content-Type"] = "application/json"
         header["Accept"] = "application/json"
 
