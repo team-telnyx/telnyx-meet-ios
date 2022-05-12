@@ -6,7 +6,7 @@ target 'Telnyx Meet' do
   use_frameworks!
 
   # Pods for Telnyx Meet
-  pod 'TelnyxVideoSdk'
+  pod 'TelnyxVideoSdk', '~> 0.2.0'
 
   # We need to have the same build settings across our dependencies in order to succesfully build our xcframework
   post_install do |installer|
