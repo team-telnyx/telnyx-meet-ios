@@ -150,7 +150,7 @@ class ChatViewController: UIViewController {
     @IBAction private func sendMessage() {
         let newMessage = inputField.text.trimmingCharacters(in: .whitespacesAndNewlines)
         if !newMessage.isEmpty {
-            let message = Message(messageType: .text, payload: newMessage, meta: nil)
+            let message = Message(type: .text, payload: newMessage, meta: nil)
             room?.sendMessage(message, recipients: nil, onSuccess: {
             })
             resetInputView()
