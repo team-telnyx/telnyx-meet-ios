@@ -1,4 +1,5 @@
 import UIKit
+import TelnyxVideoSdk
 
 class ScreenShareViewController: UIViewController {
 
@@ -6,11 +7,32 @@ class ScreenShareViewController: UIViewController {
     @IBOutlet weak var streamingView: UIView!
     @IBOutlet private weak var closeButton: UIButton!
 
+    lazy var videoRendererView: UIView = {
+        #if arch(arm64)
+        let renderer = MTLVideoView()
+        renderer.videoContentMode = .scaleAspectFit
+        return renderer
+        #else
+        return GLVideoView()
+        #endif
+    }()
+
     var screenShareParticipantName = ""
     private var currentOrientation = UIDevice.current.orientation
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        streamingView.addSubview(videoRendererView)
+        videoRendererView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            videoRendererView.leadingAnchor.constraint(equalTo: streamingView.leadingAnchor),
+            videoRendererView.topAnchor.constraint(equalTo: streamingView.topAnchor),
+            videoRendererView.trailingAnchor.constraint(equalTo: streamingView.trailingAnchor),
+            videoRendererView.bottomAnchor.constraint(equalTo: streamingView.bottomAnchor)
+        ])
+        streamingView.layoutIfNeeded()
+
         screenShareParticipantNameLabel.text = screenShareParticipantName
         closeButton.layer.cornerRadius = 17.5
         NotificationCenter.default.addObserver(self, selector: #selector(orientationChanged), name: UIDevice.orientationDidChangeNotification, object: nil)

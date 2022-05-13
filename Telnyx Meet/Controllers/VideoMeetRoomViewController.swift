@@ -35,6 +35,30 @@ class VideoMeetRoomViewController: UIViewController {
     private var localParticipantId: String {
         return room.getState().localParticipantId
     }
+    private lazy var screenShareVideoView: UIView = {
+        #if arch(arm64)
+        // Using metal
+        let renderer = MTLVideoView()
+        renderer.videoContentMode = .scaleAspectFit
+        return renderer
+        #else
+        // Using OpenGLES for the rest
+        return GLVideoView()
+        #endif
+    }()
+    private var messages = [MessageItem]()
+    private var unreadMessagesCount: Int = 0 {
+        didSet {
+            DispatchQueue.main.async {
+                self.messagesCountLabel.isHidden = self.unreadMessagesCount == 0
+                self.messagesCountLabel.text = "\(self.unreadMessagesCount)"
+                // animate new messages count
+                if self.unreadMessagesCount > 0 {
+                    self.animateNewMessagesCount()
+                }
+            }
+        }
+    }
 
     // MARK: - IBOutlets
 
@@ -53,6 +77,7 @@ class VideoMeetRoomViewController: UIViewController {
     @IBOutlet private weak var screenShareParticipantNameLabel: UILabel!
     @IBOutlet private weak var participantsCountLabel: UILabel!
     @IBOutlet private weak var roomId: UILabel!
+    @IBOutlet private weak var messagesCountLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,7 +100,6 @@ class VideoMeetRoomViewController: UIViewController {
         refreshTokenTimer = nil
         screenShareViewController = nil
         participantsViewController = nil
-        VideoRenderer.shared().dispose()
         UIApplication.shared.isIdleTimerDisabled = false
     }
 
@@ -89,6 +113,23 @@ class VideoMeetRoomViewController: UIViewController {
         fullScreenButton.clipsToBounds = true
         screenShareStatsButton.layer.cornerRadius = 17.5
         screenShareStatsButton.clipsToBounds = true
+
+        screenShareView.addSubview(screenShareVideoView)
+        screenShareVideoView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            screenShareVideoView.leadingAnchor.constraint(equalTo: screenShareView.leadingAnchor),
+            screenShareVideoView.topAnchor.constraint(equalTo: screenShareView.topAnchor),
+            screenShareVideoView.trailingAnchor.constraint(equalTo: screenShareView.trailingAnchor),
+            screenShareVideoView.bottomAnchor.constraint(equalTo: screenShareView.bottomAnchor)
+        ])
+        screenShareView.layoutIfNeeded()
+
+        messagesCountLabel.text = nil
+        messagesCountLabel.isHidden = true
+        messagesCountLabel.clipsToBounds = true
+        messagesCountLabel.textAlignment = .center
+        messagesCountLabel.layer.cornerRadius = 6
+
         updateMicButton()
         updateCameraButton()
         #if targetEnvironment(simulator)
@@ -244,10 +285,11 @@ class VideoMeetRoomViewController: UIViewController {
         guard let clientToken = userToken?.token else {
             return
         }
-        let username = participantName.isEmpty ? "User from iOS" : participantName
-        let context: [String: AnyCodable] = ["id": "429759", "username": AnyCodable(username)]
 
-        Room.createRoom(id: roomInfo.id, clientToken: clientToken, context: context) { [weak self] room in
+        let username = participantName.isEmpty ? "User from iOS" : participantName
+        let context: JSONObject = ["id": "429759", "username": username]
+
+        Room.createRoom(id: roomInfo.id, clientToken: clientToken, context: context, enableMessages: true) { [weak self] room in
             guard let self = self else { return }
             self.room = room
         }
@@ -270,6 +312,22 @@ class VideoMeetRoomViewController: UIViewController {
                 self.visibleParticipants.append(participantId)
             }
             self.participantJoined(participantId: participantId)
+        }
+
+        room.onParticipantLeaving = { [weak self] participantId, reason in
+            guard let self = self else { return }
+
+            if reason == .kicked {
+                DispatchQueue.main.async {
+                    if participantId == self.localParticipantId {
+                        self.showErrorAlert(title:"Oops! 😮" ,errorMessage: "You have been kicked out! 🦶")
+                    } else {
+                        if let participant = self.room.state.participants[participantId] {
+                            self.showToast(message: "⚠️ \(participant.name) has been kicked out! 🦶", seconds: 3.0)
+                        }
+                    }
+                }
+            }
         }
 
         room.onParticipantLeft = { [weak self] participantId in
@@ -333,14 +391,9 @@ class VideoMeetRoomViewController: UIViewController {
             }
         }
 
-        room.onStreamAudioActivity = { [weak self] participantId, streamKey in
+        room.onAudioActivity = { [weak self] participantId, streamKey in
             guard let self = self else { return }
             self.updateParticipantTalking(participantId: participantId, streamKey: streamKey ?? "")
-        }
-
-        room.onParticipantAudioActivity = { [weak self] participantId in
-            guard let self = self else { return }
-            self.updateParticipantTalking(participantId: participantId, streamKey: "")
         }
 
         room.onSubscriptionStarted = { [weak self] participantId, streamKey in
@@ -388,6 +441,30 @@ class VideoMeetRoomViewController: UIViewController {
             }
         }
 
+        // Triggered by Moderator API - mute action
+        room.onTrackCensored = { [weak self] participantId, streamKey, kind in
+            guard let self = self else { return }
+            self.showAudioModeratorAlert(participantId: participantId, streamKey: streamKey, kind: kind, isCensored: true)
+            self.updateParticipant(participantId: participantId)
+            DispatchQueue.main.async {
+                self.participantsColletionView.reloadData()
+            }
+        }
+
+        // Triggered by Moderator API - unmute action
+        room.onTrackUncensored = { [weak self] participantId, streamKey, kind in
+            guard let self = self else { return }
+            self.showAudioModeratorAlert(participantId: participantId, streamKey: streamKey, kind: kind, isCensored: false)
+            self.updateParticipant(participantId: participantId)
+        }
+
+        room.onMessageReceived = { [weak self] participantId, message, _ in
+            guard let self = self else { return }
+            let messageItem = MessageItem(sender: participantId, message: message)
+            self.messages.append(messageItem)
+            self.newMessageReceived(message: messageItem)
+        }
+
         room.connect { [weak self] status in
             guard let self = self else { return }
             if status == .connected, let localParticipant = try? self.room.getLocalParticipant() {
@@ -405,12 +482,57 @@ class VideoMeetRoomViewController: UIViewController {
         }
     }
 
-    private func showErrorAlert(errorMessage: String) {
-        let alert = UIAlertController(title: "Error", message: errorMessage, preferredStyle: .alert)
+    private func newMessageReceived(message: MessageItem) {
+        DispatchQueue.main.async {
+            self.chatViewController?.addMessage(message)
+            if self.chatViewController != nil {
+                // User is on chat screen
+                return
+            }
+            // User is not on the chat screen
+            // so we need to update the count of unread messages
+            self.unreadMessagesCount += 1
+        }
+    }
+
+    private func animateNewMessagesCount() {
+        let layer = messagesCountLabel.layer
+
+        // remove previous animation
+        layer.removeAnimation(forKey: "scale")
+
+        CATransaction.begin()
+        CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: .easeInEaseOut))
+
+        let scaleAnimation = CABasicAnimation(keyPath: "transform.scale")
+        scaleAnimation.duration = 0.3
+        scaleAnimation.toValue = 1.5
+        scaleAnimation.autoreverses = true
+
+        // add scale animation
+        layer.add(scaleAnimation, forKey: "scale")
+
+        CATransaction.commit()
+    }
+
+    private func showErrorAlert(title: String = "Error", errorMessage: String) {
+        let alert = UIAlertController(title: title, message: errorMessage, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {_ in
             self.onLeaveButton()
         }))
         present(alert, animated: true, completion: nil)
+    }
+
+    private func showAudioModeratorAlert(participantId: ParticipantId, streamKey: StreamKey, kind: String, isCensored: Bool) {
+        DispatchQueue.main.async {
+            if participantId == self.localParticipantId {
+                self.showToast(message: "⚠️ Your \(kind) from \"\(streamKey)\" stream has been \(isCensored ? "censored" : "uncensored") by the moderator", seconds: 5.0)
+            } else {
+                if let participant = self.room.state.participants[participantId] {
+                    self.showToast(message: "⚠️ \(participant.name)'s \(kind) from \"\(streamKey)\" stream has been \(isCensored ? "censored" : "uncensored") by the moderator", seconds: 5.0)
+                }
+            }
+        }
     }
 
     private func publishLocalStream(audio: Bool, video: Bool) {
@@ -547,25 +669,23 @@ class VideoMeetRoomViewController: UIViewController {
 
     private func updateParticipantTalking(participantId: String, streamKey: String) {
         DispatchQueue.main.async {
-            if self.room.isSubscribedTo(streamKey: streamKey, participantId: participantId) {
-                if streamKey == "presentation", self.isScreenShareOn {
-                    // This is audio activity from screen share. Highlight screen share
-                    self.screenShareView.layer.borderWidth = 2
-                    self.screenShareView.layer.borderColor = UIColor.yellow.cgColor
+            if streamKey == "presentation", self.isScreenShareOn {
+                // This is audio activity from screen share. Highlight screen share
+                self.screenShareView.layer.borderWidth = 2
+                self.screenShareView.layer.borderColor = UIColor.yellow.cgColor
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    self.screenShareView.layer.borderWidth = 0
+                    self.screenShareView.layer.borderColor = .none
+                }
 
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        self.screenShareView.layer.borderWidth = 0
-                        self.screenShareView.layer.borderColor = .none
-                    }
-
-                } else if self.isParticipantVisible(participantId: participantId),
-                          let index = self.participantsList.firstIndex(where: { $0.id == participantId }) {
-                    self.participantsColletionView.reloadItems(at: [
-                        IndexPath(item: index, section: 0)
-                    ])
-                    if let cell = self.participantsColletionView.cellForItem(at: IndexPath(item: index, section: 0)) as? VideoMeetParticipantCell {
-                        cell.setTalking()
-                    }
+            } else if self.isParticipantVisible(participantId: participantId),
+                      let index = self.participantsList.firstIndex(where: { $0.id == participantId }) {
+                self.participantsColletionView.reloadItems(at: [
+                    IndexPath(item: index, section: 0)
+                ])
+                if let cell = self.participantsColletionView.cellForItem(at: IndexPath(item: index, section: 0)) as? VideoMeetParticipantCell {
+                    cell.setTalking()
                 }
             }
         }
@@ -627,9 +747,10 @@ class VideoMeetRoomViewController: UIViewController {
                 // Show screen share video
                 if let participantId = self.participantScreenSharing?.id,
                    let stream = self.room.getParticipantStream(participantId: participantId, key: "presentation"),
-                   let videoTrack = stream.videoTrack {
-                    VideoRenderer.shared().renderVideoTrack(videoTrack, in: self.screenShareView)
+                   var renderer = self.screenShareVideoView as? VideoRenderer {
+                    renderer.videoTrack = stream.videoTrack
                 }
+
                 self.screenShareParticipantNameLabel.text = self.participantScreenSharing?.name
             } else {
                 // Dismiss full screen screen share vc if presented
@@ -637,8 +758,8 @@ class VideoMeetRoomViewController: UIViewController {
                     self.screenShareViewController = nil
                 })
                 // Remove screen share video
-                for view in self.screenShareView.subviews {
-                    view.removeFromSuperview()
+                if var renderer = self.screenShareVideoView as? VideoRenderer {
+                    renderer.videoTrack = nil
                 }
                 self.screenShareParticipantNameLabel.text = nil
             }
@@ -667,8 +788,24 @@ class VideoMeetRoomViewController: UIViewController {
         present(vc, animated: true, completion: nil)
     }
 
+    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        if motion == .motionShake {
+            onReportIssueButton()
+        }
+    }
+
     // MARK: - IBActions
 
+    @IBAction private func onReportIssueButton() {
+        guard let vc = storyboard?.viewController(of: ReportIssueViewController.self) else {
+            return
+        }
+        vc.room = room
+        vc.modalTransitionStyle = .crossDissolve
+        vc.modalPresentationStyle = .overFullScreen
+        present(vc, animated: true, completion: nil)
+    }
+    
     @IBAction private func onLeaveButton() {
         if self.room.status == .connected {
             self.room.disconnect { [weak self] in
@@ -706,6 +843,21 @@ class VideoMeetRoomViewController: UIViewController {
         }
     }
 
+    private weak var chatViewController: ChatViewController?
+    @IBAction private func openChat() {
+        guard let vc = storyboard?.viewController(of: ChatViewController.self) else {
+            return
+        }
+        vc.room = room
+        vc.setMessages(messages: self.messages)
+        let nc = UINavigationController(rootViewController: vc)
+        nc.modalPresentationStyle = .fullScreen
+        present(nc, animated: true, completion: nil)
+        chatViewController = vc
+        // User is opening chat screen, clear unread messages count
+        unreadMessagesCount = 0
+    }
+
     private weak var participantsViewController: ParticipantsViewController?
     @IBAction private func showAllParticipants() {
         guard let vc = storyboard?.viewController(of: ParticipantsViewController.self) else {
@@ -728,7 +880,9 @@ class VideoMeetRoomViewController: UIViewController {
         vc.modalTransitionStyle = .crossDissolve
         vc.screenShareParticipantName = participant.name
         present(vc, animated: true, completion: {
-            VideoRenderer.shared().renderVideoTrack(videoTrack, in: vc.streamingView)
+            if var renderer = vc.videoRendererView as? VideoRenderer {
+                renderer.videoTrack = videoTrack
+            }
         })
         screenShareViewController = vc
     }
