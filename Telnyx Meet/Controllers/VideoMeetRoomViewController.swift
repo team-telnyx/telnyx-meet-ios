@@ -590,7 +590,7 @@ class VideoMeetRoomViewController: UIViewController {
                                          audio: Bool,
                                          video: Bool,
                                          completion: @escaping () -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
             self.room.addSubscription(participantId: participantId, key: key, audio: audio, video: video) {
                 completion()
             }
