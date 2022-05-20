@@ -97,10 +97,18 @@ class VideoMeetParticipantCell : UICollectionViewCell {
         self.audioCensoredView.isHidden = !isAudioCensored
     }
 
-    override func prepareForReuse() {
+    private func stopRendering() {
         if var renderer = videoRendererView as? VideoRenderer {
             renderer.videoTrack = nil
         }
+    }
+
+    override func prepareForReuse() {
+        stopRendering()
         super.prepareForReuse()
+    }
+
+    deinit {
+        stopRendering()
     }
 }
