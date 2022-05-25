@@ -543,7 +543,7 @@ class VideoMeetRoomViewController: UIViewController {
         }
     }
 
-    /// This function publishes local stream if all the subscriptions for visible participants is ocmpleted.
+    /// This function publishes local stream if all the subscriptions for visible participants are ocmpleted.
     /// Local stream is also oublished If there are no remote participants or no remote participants are sharing video.
     private func publishIfSubscriptionsCompleted() {
         if self.localStream != nil {
@@ -570,7 +570,7 @@ class VideoMeetRoomViewController: UIViewController {
         }
 
         if subscriptionsCompleted == totalVideoStreams {
-            // All the subscriptions for visible participants is completed.
+            // All the subscriptions for visible participants are completed.
             self.publishLocalStream(audio: true, video: true)
         }
     }
