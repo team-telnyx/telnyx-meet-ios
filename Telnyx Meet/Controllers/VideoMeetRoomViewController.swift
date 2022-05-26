@@ -81,6 +81,8 @@ class VideoMeetRoomViewController: UIViewController {
     @IBOutlet private weak var roomId: UILabel!
     @IBOutlet private weak var messagesCountLabel: UILabel!
 
+    @IBOutlet private weak var bgFiltersBtn: UIBarButtonItem!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -139,6 +141,7 @@ class VideoMeetRoomViewController: UIViewController {
         messagesCountLabel.textAlignment = .center
         messagesCountLabel.layer.cornerRadius = 6
 
+        setupBackgroundFiltersMenu()
         updateMicButton()
         updateCameraButton()
         #if targetEnvironment(simulator)
@@ -148,6 +151,53 @@ class VideoMeetRoomViewController: UIViewController {
         #endif
         setupCollectionView()
         updateScreenShareView()
+    }
+
+    private func setupBackgroundFiltersMenu() {
+        let noFilter = UIAction(title: "No Filter", subtitle: "Removes the background filter.", image: nil) { (action) in
+            self.mediaDevices.cameraFilter = nil
+        }
+        let blurFilter = UIAction(title: "Blur", subtitle: "Blurs the background.", image: nil) { (action) in
+            self.setBGBlurFilter()
+        }
+        let abstractFilter = UIAction(title: "Abstract", subtitle: "Applies abstract background.", image: nil) { (action) in
+            self.setVirtualBGFilter(imageName: "abstract")
+        }
+        let wolverineFilter = UIAction(title: "Wolverine", subtitle: "Applies Wolverine background.", image: nil) { (action) in
+            self.setVirtualBGFilter(imageName: "wolverine")
+        }
+        let eiffelTowerFilter = UIAction(title: "Eiffel Tower", subtitle: "Applies Eiffel Tower background.", image: nil) { (action) in
+            self.setVirtualBGFilter(imageName: "eiffel tower")
+        }
+        let children = [
+            noFilter,
+            blurFilter,
+            abstractFilter,
+            wolverineFilter,
+            eiffelTowerFilter
+        ]
+        bgFiltersBtn.menu = UIMenu(title: "Background Filters", subtitle: "Choose a background filter for your video.", image: nil, identifier: .none, options: .displayInline, children: children)
+    }
+
+    private func setBGBlurFilter() {
+        var backgroundFilter = self.mediaDevices.cameraFilter as? BackgroundFilter
+        if backgroundFilter == nil {
+            backgroundFilter = BackgroundFilter()
+        }
+        backgroundFilter?.filterType = .blur(radius: 9)
+        self.mediaDevices.cameraFilter = backgroundFilter
+    }
+
+    private func setVirtualBGFilter(imageName: String) {
+        guard let backgroundImage = UIImage(named: imageName) else {
+            return
+        }
+        var backgroundFilter = self.mediaDevices.cameraFilter as? BackgroundFilter
+        if backgroundFilter == nil {
+            backgroundFilter = BackgroundFilter()
+        }
+        backgroundFilter?.filterType = .virtualBackground(image: backgroundImage)
+        self.mediaDevices.cameraFilter = backgroundFilter
     }
 
     private func updateMicButton() {
