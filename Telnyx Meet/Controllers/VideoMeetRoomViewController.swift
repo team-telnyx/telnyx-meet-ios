@@ -59,6 +59,8 @@ class VideoMeetRoomViewController: UIViewController {
             }
         }
     }
+    /// This map is used to keep a track of subscription status for visible participant's streams.
+    private var visibleParticipantsSubscriptions = [ParticipantId: [StreamKey: Bool]]()
 
     // MARK: - IBOutlets
 
@@ -317,6 +319,8 @@ class VideoMeetRoomViewController: UIViewController {
             }
             if self.visibleParticipants.count < self.maxVisibleParticipants {
                 self.visibleParticipants.append(participantId)
+                // We need to keep a track of subscriptions for visible participants.
+                self.visibleParticipantsSubscriptions[participantId] = [:]
             }
             self.participantJoined(participantId: participantId)
         }
@@ -412,6 +416,10 @@ class VideoMeetRoomViewController: UIViewController {
             } else {
                 self.updateParticipant(participantId: participantId)
             }
+
+            // Update subscription status for subscription
+            self.visibleParticipantsSubscriptions[participantId]?[streamKey] = true
+            self.publishIfSubscriptionsCompleted()
         }
 
         room.onSubscriptionPaused = { [weak self] participantId, streamKey in
@@ -481,7 +489,7 @@ class VideoMeetRoomViewController: UIViewController {
                     self.participantsColletionView.reloadData()
                     self.updateAllParticipantsUI()
                 }
-                self.publishLocalStream(audio: true, video: true)
+                self.publishIfSubscriptionsCompleted()
             }
         }
     }
@@ -539,25 +547,61 @@ class VideoMeetRoomViewController: UIViewController {
         }
     }
 
+    /// This function publishes local stream if all the subscriptions for visible participants are ocmpleted.
+    /// Local stream is also oublished If there are no remote participants or no remote participants are sharing video.
+    private func publishIfSubscriptionsCompleted() {
+        if self.localStream != nil {
+            // Already published local stream.
+            return
+        }
+
+        let totalParticipants = self.room.state.participants.count
+        let totalVideoStreams = self.room.state.participants.reduce(0) { result, pair in
+            return result + pair.value.streams.count
+        }
+
+        if totalParticipants == 1 || totalVideoStreams == 0 {
+            // There are no participants or no remote participant is sharing their video.
+            self.publishLocalStream(audio: true, video: true)
+            return
+        }
+
+        // There are remote participants with video on.
+        // Wait till all the subscriptions for only the visible participants is completed.
+        let subscriptionsCompleted = self.visibleParticipantsSubscriptions.reduce(0) { result, item in
+            let subscriptions = item.value.filter({ $0.value == true }).count
+            return result + subscriptions
+        }
+
+        if subscriptionsCompleted == totalVideoStreams {
+            // All the subscriptions for visible participants are completed.
+            self.publishLocalStream(audio: true, video: true)
+        }
+    }
+
     private func publishLocalStream(audio: Bool, video: Bool) {
-        mediaDevices.simulatorVideoFileName = "telnyx.mp4"
-        self.mediaDevices.getUserMedia(audio: true, video: true, cameraPosition: .front, onSuccess: { mediaStream in
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let self = self else { return }
 
-            self.localStream = mediaStream
-            let audioTrack = audio ? self.localStream?.audioTracks.first : nil
-            let videoTrack = video ? self.localStream?.videoTracks.first : nil
+            self.mediaDevices.simulatorVideoFileName = "telnyx.mp4"
+            self.mediaDevices.getUserMedia(audio: true, video: true, cameraPosition: .front, onSuccess: { mediaStream in
 
-            self.room.addStream(key: "self", audio: audioTrack, video: videoTrack) { [weak self] in
-                guard let self = self else { return }
-                self.audioEnabled = audio
-                self.videoEnabled = video
-                self.updateMicButton()
-                self.updateCameraButton()
-                self.updateParticipant(participantId: self.localParticipantId)
-            }
-        }, onFailed: { error in
-            // handle error
-        })
+                self.localStream = mediaStream
+                let audioTrack = audio ? self.localStream?.audioTracks.first : nil
+                let videoTrack = video ? self.localStream?.videoTracks.first : nil
+
+                self.room.addStream(key: "self", audio: audioTrack, video: videoTrack) { [weak self] in
+                    guard let self = self else { return }
+                    self.audioEnabled = audio
+                    self.videoEnabled = video
+                    self.updateMicButton()
+                    self.updateCameraButton()
+                    self.updateParticipant(participantId: self.localParticipantId)
+                }
+            }, onFailed: { error in
+                // handle error
+            })
+        }
     }
 
     private func updateLocalStream(audio: Bool, video: Bool) {
@@ -594,6 +638,8 @@ class VideoMeetRoomViewController: UIViewController {
                                          audio: Bool,
                                          video: Bool,
                                          completion: @escaping () -> Void) {
+        // Keep a track of subscription
+        self.visibleParticipantsSubscriptions[participantId]?[key] = false
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.room.addSubscription(participantId: participantId, key: key, audio: audio, video: video) {
                 completion()
