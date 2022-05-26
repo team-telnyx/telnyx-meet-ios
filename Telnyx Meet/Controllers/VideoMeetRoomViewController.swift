@@ -86,13 +86,20 @@ class VideoMeetRoomViewController: UIViewController {
         UIApplication.shared.isIdleTimerDisabled = true
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateCollectionViewLayout()
+    }
+
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        // Re-draw collectionview if the device orientation has changed.
+        updateCollectionViewLayout()
+    }
+
+    private func updateCollectionViewLayout() {
         calculateCellSize()
         layout.itemSize = itemCellSize
         layout.invalidateLayout()
-        participantsColletionView.reloadData()
     }
 
     deinit {
@@ -446,9 +453,6 @@ class VideoMeetRoomViewController: UIViewController {
             guard let self = self else { return }
             self.showAudioModeratorAlert(participantId: participantId, streamKey: streamKey, kind: kind, isCensored: true)
             self.updateParticipant(participantId: participantId)
-            DispatchQueue.main.async {
-                self.participantsColletionView.reloadData()
-            }
         }
 
         // Triggered by Moderator API - unmute action
@@ -681,9 +685,6 @@ class VideoMeetRoomViewController: UIViewController {
 
             } else if self.isParticipantVisible(participantId: participantId),
                       let index = self.participantsList.firstIndex(where: { $0.id == participantId }) {
-                self.participantsColletionView.reloadItems(at: [
-                    IndexPath(item: index, section: 0)
-                ])
                 if let cell = self.participantsColletionView.cellForItem(at: IndexPath(item: index, section: 0)) as? VideoMeetParticipantCell {
                     cell.setTalking()
                 }
@@ -694,9 +695,12 @@ class VideoMeetRoomViewController: UIViewController {
     private func updateParticipant(participantId: String) {
         DispatchQueue.main.async {
             if let index = self.participantsList.firstIndex(where: { $0.id == participantId }) {
-                self.participantsColletionView.reloadItems(at: [
-                    IndexPath(item: index, section: 0)
-                ])
+                if let cell = self.participantsColletionView.cellForItem(at: IndexPath(item: index, section: 0)) as? VideoMeetParticipantCell {
+                    let participant = self.participantsList[index]
+                    let stream = self.room.getParticipantStream(participantId: participantId, key: "self")
+                    let mirror = participantId == self.localParticipantId
+                    cell.displayParticipant(participant: participant, stream: stream, mirrorVideo: mirror)
+                }
             }
         }
     }
@@ -731,17 +735,41 @@ class VideoMeetRoomViewController: UIViewController {
         DispatchQueue.main.async {
             self.isScreenShareOn = self.participantScreenSharing != nil
 
-            self.participantsList.removeAll()
-            self.visibleParticipants.removeAll()
+            if self.isScreenShareOn {
+                if self.visibleParticipants.count > 6 {
+                    // there are more than 6 visible participants
+                    // keep only 6 visible participants as we need to show screen share
+                    self.participantsColletionView.performBatchUpdates {
+                        let rangeToRemove = (6..<self.visibleParticipants.count)//.reversed()
+                        let indexPathsToRemove = rangeToRemove.map({ IndexPath(item: $0, section: 0) })
+                        /*for i in rangeToRemove {
+                         self.visibleParticipants.remove(at: i)
+                         self.participantsList.remove(at: i)
+                         }*/
+                        self.visibleParticipants.removeSubrange(rangeToRemove)
+                        self.participantsList.removeSubrange(rangeToRemove)
+                        self.participantsColletionView.deleteItems(at: indexPathsToRemove)
 
-            if self.allParticipantsList.count > self.maxVisibleParticipants {
-                self.participantsList.append(contentsOf: self.allParticipantsList[0...self.maxVisibleParticipants-1])
+                        // TODO: - Unsubscribe/pause video stream
+                    } completion: { _ in
+                    }
+                }
             } else {
-                self.participantsList.append(contentsOf: self.allParticipantsList)
-            }
+                if self.visibleParticipants.count < 8 && self.allParticipantsList.count > self.visibleParticipants.count {
+                    // screen share is turned off
+                    // there is still more space to display visible participants
+                    let lastIndex = self.allParticipantsList.count > 8 ? 8 : self.allParticipantsList.count
+                    let rangeToAdd = (self.visibleParticipants.count..<lastIndex)
+                    let indexPathsToAdd = rangeToAdd.map({ IndexPath(item: $0, section: 0) })
+                    for i in rangeToAdd {
+                        self.visibleParticipants.append(self.allParticipantsList[i].id)
+                        self.participantsList.append(self.allParticipantsList[i])
+                    }
+                    self.participantsColletionView.insertItems(at: indexPathsToAdd)
 
-            self.visibleParticipants.append(contentsOf: self.participantsList.map({ $0.id }))
-            self.participantsColletionView.reloadData()
+                    // TODO: - Re-subscribe/resume video stream
+                }
+            }
 
             if self.isScreenShareOn {
                 // Show screen share video
@@ -770,7 +798,6 @@ class VideoMeetRoomViewController: UIViewController {
                 self.view.layoutIfNeeded()
             } completion: { _ in
                 self.layout.invalidateLayout()
-                self.participantsColletionView.reloadData()
             }
         }
     }

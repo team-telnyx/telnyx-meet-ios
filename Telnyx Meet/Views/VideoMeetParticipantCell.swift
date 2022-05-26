@@ -11,7 +11,9 @@ class VideoMeetParticipantCell : UICollectionViewCell {
     @IBOutlet private weak var microphoneView: UIImageView!
     @IBOutlet private weak var audioCensoredView: UIImageView!
 
-    private lazy var videoRendererView: UIView = {
+    private var videoRendererView: UIView?
+
+    private func createVideoRendererView() -> UIView {
         #if arch(arm64)
         let renderer = MTLVideoView()
         renderer.videoContentMode = .scaleAspectFit
@@ -19,15 +21,17 @@ class VideoMeetParticipantCell : UICollectionViewCell {
         #else
         return GLVideoView()
         #endif
-    }()
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        addVideoRendererView()
     }
 
     private func addVideoRendererView() {
-        if videoRendererView.superview != nil { return } // Already added.
+        // Cleanup previous video renderer view
+        for view in streamingView.subviews {
+            view.removeFromSuperview()
+        }
+
+        // Create a new video renderer view
+        let videoRendererView = createVideoRendererView()
+        self.videoRendererView = videoRendererView
 
         streamingView.addSubview(videoRendererView)
         videoRendererView.translatesAutoresizingMaskIntoConstraints = false
@@ -41,9 +45,7 @@ class VideoMeetParticipantCell : UICollectionViewCell {
     }
 
     private func startRenderingVideo(videoTrack: RTCVideoTrack?) {
-        if videoRendererView.superview == nil {
-            addVideoRendererView()
-        }
+        addVideoRendererView()
         if var renderer = videoRendererView as? VideoRenderer {
             renderer.videoTrack = videoTrack
         }
@@ -97,10 +99,20 @@ class VideoMeetParticipantCell : UICollectionViewCell {
         self.audioCensoredView.isHidden = !isAudioCensored
     }
 
-    override func prepareForReuse() {
+    private func stopRendering() {
         if var renderer = videoRendererView as? VideoRenderer {
             renderer.videoTrack = nil
         }
+        videoRendererView?.removeFromSuperview()
+        videoRendererView = nil
+    }
+
+    override func prepareForReuse() {
+        stopRendering()
         super.prepareForReuse()
+    }
+
+    deinit {
+        stopRendering()
     }
 }
