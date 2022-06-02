@@ -148,6 +148,8 @@ class VideoMeetRoomViewController: UIViewController {
         // `cameraSwitchButton ` is enabled only for a real device.
         // For simulator, this button remains disabled.
         cameraSwitchButton.isEnabled = false
+        // Disable background filters menu for simulator
+        bgFiltersBtn.isEnabled = false
         #endif
         setupCollectionView()
         updateScreenShareView()
