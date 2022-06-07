@@ -657,7 +657,8 @@ class VideoMeetRoomViewController: UIViewController {
     }
 
     private func updateLocalStream(audio: Bool, video: Bool) {
-        if ((try? room.getLocalStreams()) != nil) {
+        if let localStreams = try? room.getLocalStreams(),
+           localStreams.count != 0 {
             let audioTrack = audio ? localStream?.audioTracks.first : nil
             let videoTrack = video ? localStream?.videoTracks.first : nil
             
