@@ -395,7 +395,6 @@ class VideoMeetRoomViewController: UIViewController {
 
         room.onParticipantLeft = { [weak self] participantId in
             guard let self = self else { return }
-            self.visibleParticipants.removeAll(where: { $0 == participantId })
             self.participantLeft(participantId: participantId)
         }
 
@@ -728,6 +727,7 @@ class VideoMeetRoomViewController: UIViewController {
 
     private func participantLeft(participantId: String) {
         DispatchQueue.main.async {
+            self.visibleParticipants.removeAll(where: { $0 == participantId })
             if self.isScreenShareOn, self.participantScreenSharing?.id == participantId {
                 self.participantScreenSharing = nil
                 self.updateScreenShareView()
