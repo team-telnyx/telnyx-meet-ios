@@ -62,6 +62,7 @@ class VideoMeetRoomViewController: UIViewController {
     /// This map is used to keep a track of subscription status for visible participant's streams.
     private var visibleParticipantsSubscriptions = [ParticipantId: [StreamKey: Bool]]()
 
+    private var loadingView: UIAlertController = UIAlertController(title: nil, message: "Joining...", preferredStyle: .alert)
     // MARK: - IBOutlets
 
     @IBOutlet private weak var participantsColletionView: UICollectionView!
@@ -527,7 +528,8 @@ class VideoMeetRoomViewController: UIViewController {
             self.messages.append(messageItem)
             self.newMessageReceived(message: messageItem)
         }
-
+        self.showLoading()
+        
         room.connect { [weak self] status in
             guard let self = self else { return }
             if status == .connected, let localParticipant = try? self.room.getLocalParticipant() {
@@ -539,12 +541,30 @@ class VideoMeetRoomViewController: UIViewController {
                     }
                     self.participantsColletionView.reloadData()
                     self.updateAllParticipantsUI()
+                    self.hideLoading()
                 }
                 self.publishIfSubscriptionsCompleted()
             }
         }
     }
+    
+    private func showLoading() {
+        self.participantsColletionView.isHidden = true        
+        let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
+        loadingIndicator.hidesWhenStopped = true
+        loadingIndicator.style = UIActivityIndicatorView.Style.medium
+        loadingIndicator.startAnimating();
+        
+        self.loadingView.view.addSubview(loadingIndicator)
+        present(self.loadingView, animated: true, completion: nil)
+    }
+    
+    private func hideLoading() {
+        self.participantsColletionView.isHidden = false
+        self.loadingView.dismiss(animated: false, completion: nil)
+    }
 
+    
     private func newMessageReceived(message: MessageItem) {
         DispatchQueue.main.async {
             self.chatViewController?.addMessage(message)
@@ -598,8 +618,8 @@ class VideoMeetRoomViewController: UIViewController {
         }
     }
 
-    /// This function publishes local stream if all the subscriptions for visible participants are ocmpleted.
-    /// Local stream is also oublished If there are no remote participants or no remote participants are sharing video.
+    /// This function publishes local stream if all the subscriptions for visible participants are completed.
+    /// Local stream is also published If there are no remote participants or no remote participants are sharing video.
     private func publishIfSubscriptionsCompleted() {
         if self.localStream != nil {
             // Already published local stream.
@@ -613,7 +633,7 @@ class VideoMeetRoomViewController: UIViewController {
 
         if totalParticipants == 1 || totalVideoStreams == 0 {
             // There are no participants or no remote participant is sharing their video.
-            self.publishLocalStream(audio: true, video: true)
+            self.publishLocalStream(audio: false, video: false)
             return
         }
 
