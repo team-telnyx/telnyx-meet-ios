@@ -781,11 +781,25 @@ class VideoMeetRoomViewController: UIViewController {
                     self.participantsColletionView.insertItems(at: [
                         IndexPath(item: self.participantsList.count-1, section: 0)
                     ])
-                    if let participantId = self.participantsList.last?.id {
-                        self.visibleParticipants.append(participantId)
+                    guard let participantId = self.participantsList.last?.id else {
+                        return
                     }
+                    self.visibleParticipants.append(participantId)
+                    self.resumeSubscription(participantId: participantId)
                 } completion: { _ in
                 }
+            }
+        }
+    }
+
+    private func resumeSubscription(participantId: ParticipantId) {
+        let streamKey = "self"
+        if !self.room.isSubscribedTo(streamKey: streamKey, participantId: participantId) {
+            self.subscribeToRemoteStream(participantId: participantId, key: streamKey, audio: true, video: true) {
+            }
+        } else if let subscription = self.room.state.subscriptions[participantId]?[streamKey],
+                  subscription.isPaused {
+            self.room.resumeSubscription(participantId: participantId, key: streamKey) {
             }
         }
     }
@@ -859,12 +873,8 @@ class VideoMeetRoomViewController: UIViewController {
                     // there are more than 6 visible participants
                     // keep only 6 visible participants as we need to show screen share
                     self.participantsColletionView.performBatchUpdates {
-                        let rangeToRemove = (6..<self.visibleParticipants.count)//.reversed()
+                        let rangeToRemove = (6..<self.visibleParticipants.count)
                         let indexPathsToRemove = rangeToRemove.map({ IndexPath(item: $0, section: 0) })
-                        /*for i in rangeToRemove {
-                         self.visibleParticipants.remove(at: i)
-                         self.participantsList.remove(at: i)
-                         }*/
                         self.visibleParticipants.removeSubrange(rangeToRemove)
                         self.participantsList.removeSubrange(rangeToRemove)
                         self.participantsColletionView.deleteItems(at: indexPathsToRemove)
@@ -886,7 +896,11 @@ class VideoMeetRoomViewController: UIViewController {
                     }
                     self.participantsColletionView.insertItems(at: indexPathsToAdd)
 
-                    // TODO: - Re-subscribe/resume video stream
+                    // Re-subscribe/resume video stream
+                    for i in rangeToAdd {
+                        let participant = self.participantsList[i]
+                        self.resumeSubscription(participantId: participant.id)
+                    }
                 }
             }
 
