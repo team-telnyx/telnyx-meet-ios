@@ -549,7 +549,7 @@ class VideoMeetRoomViewController: UIViewController {
     }
     
     private func showLoading() {
-        self.participantsColletionView.isHidden = true        
+        self.participantsColletionView.isHidden = true
         let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
         loadingIndicator.hidesWhenStopped = true
         loadingIndicator.style = UIActivityIndicatorView.Style.medium
@@ -633,7 +633,7 @@ class VideoMeetRoomViewController: UIViewController {
 
         if totalParticipants == 1 || totalVideoStreams == 0 {
             // There are no participants or no remote participant is sharing their video.
-            self.publishLocalStream(audio: false, video: false)
+            self.publishLocalStream(audio: true, video: true)
             return
         }
 
