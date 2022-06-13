@@ -44,23 +44,22 @@ class VideoMeetParticipantCell : UICollectionViewCell {
         streamingView.layoutIfNeeded()
     }
 
-    private func startRenderingVideo(videoTrack: RTCVideoTrack?) {
+    func startRenderingVideo(videoTrack: RTCVideoTrack?) {
         addVideoRendererView()
         if var renderer = videoRendererView as? VideoRenderer {
             renderer.videoTrack = videoTrack
         }
     }
 
-    private func setMicrophoneActive(isAudioEnabled: Bool) {
+    func setMicrophoneActive(isAudioEnabled: Bool) {
         self.microphoneView.isHidden = isAudioEnabled
     }
 
-    private func setVideoActive(isVideoActive: Bool) {
+    func setVideoActive(isVideoActive: Bool) {
         if !isVideoActive {
-            for view in self.streamingView.subviews {
-                view.removeFromSuperview()
-            }
+            stopRendering()
         }
+        streamingView.isHidden = !isVideoActive
         bigUserName.isHidden = isVideoActive
         userName.isHidden = !isVideoActive
     }
@@ -77,6 +76,7 @@ class VideoMeetParticipantCell : UICollectionViewCell {
         setMicrophoneActive(isAudioEnabled: stream?.isAudioEnabled ?? false)
         setAudioCensored(isAudioCensored: stream?.isAudioCensored ?? false)
     }
+
 
     func flipCamera(mirror: Bool) {
         self.streamingView.transform = mirror ? CGAffineTransform(scaleX: -1, y: 1) : CGAffineTransform.identity
@@ -95,7 +95,7 @@ class VideoMeetParticipantCell : UICollectionViewCell {
         }
     }
     
-    private func setAudioCensored(isAudioCensored: Bool) {
+    func setAudioCensored(isAudioCensored: Bool) {
         self.audioCensoredView.isHidden = !isAudioCensored
     }
 

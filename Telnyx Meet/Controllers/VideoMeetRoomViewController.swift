@@ -423,7 +423,7 @@ class VideoMeetRoomViewController: UIViewController {
                self.isParticipantVisible(participantId: participantId), streamKey == "self",
                let stream = self.room.getParticipantStream(participantId: participantId, key: streamKey) {
                 if self.room.isSubscribedTo(streamKey: streamKey, participantId: participantId) {
-                    self.updateParticipant(participantId: participantId)
+                    self.onTrackEnabled(participantId: participantId, kind: kind)
                 } else {
                     self.subscribeToRemoteStream(participantId: participantId, key: streamKey, audio: stream.isAudioEnabled, video: stream.isVideoEnabled) {
                     }
@@ -436,7 +436,7 @@ class VideoMeetRoomViewController: UIViewController {
             if self.isParticipantVisible(participantId: participantId),
                self.room.isSubscribedTo(streamKey: streamKey, participantId: participantId),
                streamKey == "self" {
-                self.updateParticipant(participantId: participantId)
+                self.onTrackDisabled(participantId: participantId, kind: kind)
             }
         }
 
@@ -512,14 +512,14 @@ class VideoMeetRoomViewController: UIViewController {
         room.onTrackCensored = { [weak self] participantId, streamKey, kind in
             guard let self = self else { return }
             self.showAudioModeratorAlert(participantId: participantId, streamKey: streamKey, kind: kind, isCensored: true)
-            self.updateParticipant(participantId: participantId)
+            self.onTrackDisabled(participantId: participantId, kind: kind, censored: true)
         }
 
         // Triggered by Moderator API - unmute action
         room.onTrackUncensored = { [weak self] participantId, streamKey, kind in
             guard let self = self else { return }
             self.showAudioModeratorAlert(participantId: participantId, streamKey: streamKey, kind: kind, isCensored: false)
-            self.updateParticipant(participantId: participantId)
+            self.onTrackEnabled(participantId: participantId, kind: kind, uncensored: true)
         }
 
         room.onMessageReceived = { [weak self] participantId, message, _ in
@@ -822,6 +822,67 @@ class VideoMeetRoomViewController: UIViewController {
                     cell.setTalking()
                 }
             }
+        }
+    }
+
+    private func onTrackEnabled(participantId: ParticipantId, kind: String, uncensored: Bool = false) {
+        if kind == "audio" {
+            if uncensored {
+                updateCensoredStatusFor(participantId, isCensored: uncensored)
+                return
+            }
+            updateMicStatusFor(participantId, audioEnabled: true)
+        } else if kind == "video" {
+            updateVideoStatusFor(participantId, videoEnabled: true)
+        }
+    }
+
+    private func onTrackDisabled(participantId: ParticipantId, kind: String, censored: Bool = false) {
+        if kind == "audio" {
+            if censored {
+                updateCensoredStatusFor(participantId, isCensored: censored)
+                return
+            }
+            updateMicStatusFor(participantId, audioEnabled: false)
+        } else if kind == "video" {
+            updateVideoStatusFor(participantId, videoEnabled: false)
+        }
+    }
+
+    private func getParticipantCellAt(_ index: Int) -> VideoMeetParticipantCell? {
+        let indexPath = IndexPath(item: index, section: 0)
+        return participantsColletionView.cellForItem(at: indexPath) as? VideoMeetParticipantCell
+    }
+
+    private func updateCensoredStatusFor(_ participantId: ParticipantId, isCensored: Bool) {
+        DispatchQueue.main.async {
+            guard let index = self.participantsList.firstIndex(where: { $0.id == participantId }),
+                  let cell = self.getParticipantCellAt(index) else {
+                return
+            }
+            cell.setAudioCensored(isAudioCensored: isCensored)
+        }
+    }
+
+    private func updateMicStatusFor(_ participantId: ParticipantId, audioEnabled: Bool) {
+        DispatchQueue.main.async {
+            guard let index = self.participantsList.firstIndex(where: { $0.id == participantId }),
+                  let cell = self.getParticipantCellAt(index) else {
+                return
+            }
+            cell.setMicrophoneActive(isAudioEnabled: audioEnabled)
+        }
+    }
+
+    private func updateVideoStatusFor(_ participantId: ParticipantId, videoEnabled: Bool) {
+        DispatchQueue.main.async {
+            guard let index = self.participantsList.firstIndex(where: { $0.id == participantId }),
+                  let cell = self.getParticipantCellAt(index) else {
+                return
+            }
+            cell.setVideoActive(isVideoActive: videoEnabled)
+            let stream = self.room.getParticipantStream(participantId: participantId, key: "self")
+            cell.startRenderingVideo(videoTrack: stream?.videoTrack)
         }
     }
 
