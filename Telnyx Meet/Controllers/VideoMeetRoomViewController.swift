@@ -1,6 +1,7 @@
 import UIKit
 import TelnyxVideoSdk
 import WebRTC
+import MediaPlayer
 
 class VideoMeetRoomViewController: UIViewController {
 
@@ -63,6 +64,31 @@ class VideoMeetRoomViewController: UIViewController {
     private var visibleParticipantsSubscriptions = [ParticipantId: [StreamKey: Bool]]()
 
     private var loadingView: UIAlertController = UIAlertController(title: nil, message: "Joining...", preferredStyle: .alert)
+
+    /// Checks if there is any external audio output device like AitPods / bluetooth / wired headphones connected.
+    var isUsingExternalAudioOutput: Bool {
+        get {
+            let outputs = audioSession.currentRoute.outputs
+            for portDesc in outputs {
+                if portDesc.portType != .builtInSpeaker &&
+                    portDesc.portType != .builtInReceiver {
+                    // Audio is routed via some external audio output device
+                    // e.g: AirPods / wired headphones
+                    return true
+                }
+            }
+            // no external audio output devices found
+            return false
+        }
+    }
+    /// Boolean property to toggle audio output to and from speaker
+    var isSpeaker = true {
+        didSet {
+            try? audioSession.overrideOutputAudioPort(isSpeaker ? .speaker : .none)
+        }
+    }
+    private let audioSession = AVAudioSession.sharedInstance()
+
     // MARK: - IBOutlets
 
     @IBOutlet private weak var participantsColletionView: UICollectionView!
@@ -101,6 +127,64 @@ class VideoMeetRoomViewController: UIViewController {
         updateCollectionViewLayout()
     }
 
+    private func configureAudio() {
+        NotificationCenter.default.addObserver(self, selector: #selector(audioRouteChanged(notification:)), name: AVAudioSession.routeChangeNotification, object: nil)
+
+        try? audioSession.setCategory(.playAndRecord, options: [.defaultToSpeaker, .allowBluetooth, .allowBluetoothA2DP])
+        try? audioSession.setMode(.videoChat)
+        try? audioSession.setActive(true)
+
+        #if !targetEnvironment(simulator)
+        // Configure audio output devices menu
+        /**
+         It is complex/difficult to change the output devices.
+         This is a hack to present the audio output devices.
+
+         To achieve this, we are using `MPVolumeView` from `MediaPlayer` module.
+         `MPVolumeView` shows volume slider and `MPButton` (part of private API).
+         We only need `MPButton` so we disable/hide the volume slider.
+         The click event of the `MPButton` is handled by the system/MediaPlayer internally.
+         The system then takes care of presenting available output devices.
+
+         `Please note that this is not the recommended way of selecting audio routes.`
+         `This is just a sample app so we are using this hack.`
+         */
+        let audioOutptView = MPVolumeView()
+        audioOutptView.showsVolumeSlider = false // disable the volume slider
+        for subView in audioOutptView.subviews {
+            if let audioRouteBtn = subView as? UIButton {
+                // set custom icon and tint color for `MPButton`
+                // by default, it shows the air play icon in white color and we are not able to tint that image.
+                audioRouteBtn.setImage(UIImage(systemName: "airplayvideo")?.withRenderingMode(.alwaysTemplate), for: .normal)
+                audioRouteBtn.tintColor = .txGreen
+            }
+        }
+
+        let barButton = UIBarButtonItem(customView: audioOutptView)
+        self.navigationItem.rightBarButtonItems?.append(barButton)
+        #endif
+
+        if !isUsingExternalAudioOutput {
+            // if not using AirPods / Headphones
+            // we override the audio output to speaker
+            isSpeaker = true
+        }
+    }
+
+    @objc private func audioRouteChanged(notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let reasonValue = userInfo[AVAudioSessionRouteChangeReasonKey] as? UInt,
+              let reason = AVAudioSession.RouteChangeReason(rawValue:reasonValue) else {
+            return
+        }
+
+        if reason == .oldDeviceUnavailable {
+            // audio output device was disconnected
+            // change output to speaker
+            isSpeaker = true
+        }
+    }
+
     private func updateCollectionViewLayout() {
         calculateCellSize()
         layout.itemSize = itemCellSize
@@ -113,6 +197,7 @@ class VideoMeetRoomViewController: UIViewController {
         screenShareViewController = nil
         participantsViewController = nil
         UIApplication.shared.isIdleTimerDisabled = false
+        NotificationCenter.default.removeObserver(self, name: AVAudioSession.routeChangeNotification, object: nil)
     }
 
     // MARK: - Private methods
@@ -535,6 +620,7 @@ class VideoMeetRoomViewController: UIViewController {
             if status == .connected, let localParticipant = try? self.room.getLocalParticipant() {
                 self.visibleParticipants.insert(self.localParticipantId, at: 0)
                 DispatchQueue.main.async {
+                    self.configureAudio()
                     if !self.participantsList.contains(where: { $0.id == localParticipant.id }) {
                         self.participantsList.insert(localParticipant, at: 0)
                         self.allParticipantsList.insert(localParticipant, at: 0)
