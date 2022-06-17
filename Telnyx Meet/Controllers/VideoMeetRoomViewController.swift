@@ -196,6 +196,7 @@ class VideoMeetRoomViewController: UIViewController {
         refreshTokenTimer = nil
         screenShareViewController = nil
         participantsViewController = nil
+        localStream = nil
         UIApplication.shared.isIdleTimerDisabled = false
         NotificationCenter.default.removeObserver(self, name: AVAudioSession.routeChangeNotification, object: nil)
     }
@@ -242,20 +243,20 @@ class VideoMeetRoomViewController: UIViewController {
     }
 
     private func setupBackgroundFiltersMenu() {
-        let noFilter = UIAction(title: "No Filter", subtitle: "Removes the background filter.", image: nil) { (action) in
-            self.mediaDevices.cameraFilter = nil
+        let noFilter = UIAction(title: "No Filter", subtitle: "Removes the background filter.", image: nil) { [weak self] (action) in
+            self?.mediaDevices.cameraFilter = nil
         }
-        let blurFilter = UIAction(title: "Blur", subtitle: "Blurs the background.", image: nil) { (action) in
-            self.setBGBlurFilter()
+        let blurFilter = UIAction(title: "Blur", subtitle: "Blurs the background.", image: nil) { [weak self] (action) in
+            self?.setBGBlurFilter()
         }
-        let abstractFilter = UIAction(title: "Abstract", subtitle: "Applies abstract background.", image: nil) { (action) in
-            self.setVirtualBGFilter(imageName: "abstract")
+        let abstractFilter = UIAction(title: "Abstract", subtitle: "Applies abstract background.", image: nil) { [weak self] (action) in
+            self?.setVirtualBGFilter(imageName: "abstract")
         }
-        let wolverineFilter = UIAction(title: "Wolverine", subtitle: "Applies Wolverine background.", image: nil) { (action) in
-            self.setVirtualBGFilter(imageName: "wolverine")
+        let wolverineFilter = UIAction(title: "Wolverine", subtitle: "Applies Wolverine background.", image: nil) { [weak self] (action) in
+            self?.setVirtualBGFilter(imageName: "wolverine")
         }
-        let eiffelTowerFilter = UIAction(title: "Eiffel Tower", subtitle: "Applies Eiffel Tower background.", image: nil) { (action) in
-            self.setVirtualBGFilter(imageName: "eiffel tower")
+        let eiffelTowerFilter = UIAction(title: "Eiffel Tower", subtitle: "Applies Eiffel Tower background.", image: nil) { [weak self] (action) in
+            self?.setVirtualBGFilter(imageName: "eiffel tower")
         }
         let children = [
             noFilter,
@@ -1114,17 +1115,17 @@ class VideoMeetRoomViewController: UIViewController {
     }
     
     @IBAction private func onLeaveButton() {
+        self.mediaDevices.cameraFilter = nil
+        self.mediaDevices.stopCapturingCameraVideo()
         if self.room.status == .connected {
             self.room.disconnect { [weak self] in
                 guard let self = self else { return }
-                self.mediaDevices.stopCapturingCameraVideo()
                 DispatchQueue.main.async {
                     self.navigationController?.popViewController(animated: true)
                 }
             }
             return
         } else {
-            self.mediaDevices.stopCapturingCameraVideo()
             self.navigationController?.popViewController(animated: true)
         }
     }
@@ -1136,6 +1137,12 @@ class VideoMeetRoomViewController: UIViewController {
 
     @IBAction private func toggleVideo() {
         videoEnabled.toggle()
+        if videoEnabled {
+            mediaDevices.startCapturingCameraVideo()
+        } else {
+            mediaDevices.stopCapturingCameraVideo()
+        }
+        bgFiltersBtn.isEnabled = videoEnabled
         updateLocalStream(audio: audioEnabled, video: videoEnabled)
     }
 
