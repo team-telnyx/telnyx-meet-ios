@@ -391,6 +391,10 @@ class VideoMeetRoomViewController: UIViewController {
                         }
                     }
                 }
+            } else if reason == .destroyed {
+                DispatchQueue.main.async {
+                    self.showErrorAlert(title:"Oops! ⚠️" ,errorMessage: "Room has been destroyed!")
+                }
             }
         }
 
