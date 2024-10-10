@@ -46,7 +46,7 @@
 		045856A1282547D500CC44A5 /* ChatMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0458569F282547D500CC44A5 /* ChatMessageCell.xib */; };
 		045856A32825541900CC44A5 /* MessageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045856A22825541900CC44A5 /* MessageItem.swift */; };
 		048B2F56282C0ABA00D75EDC /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048B2F55282C0ABA00D75EDC /* UIViewControllerExtension.swift */; };
-		55883A74A3C0057CC35B51D4 /* Pods_Telnyx_Meet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4799B23054764CC41B96B41 /* Pods_Telnyx_Meet.framework */; };
+		72EC1D67D7596D58D2EB7605 /* Pods_Telnyx_Meet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 322F7885210F607C72CB059C /* Pods_Telnyx_Meet.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -91,9 +91,10 @@
 		0458569F282547D500CC44A5 /* ChatMessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatMessageCell.xib; sourceTree = "<group>"; };
 		045856A22825541900CC44A5 /* MessageItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageItem.swift; sourceTree = "<group>"; };
 		048B2F55282C0ABA00D75EDC /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
-		24CC4831990AB8FA8D5A4458 /* Pods-Telnyx Meet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telnyx Meet.release.xcconfig"; path = "Target Support Files/Pods-Telnyx Meet/Pods-Telnyx Meet.release.xcconfig"; sourceTree = "<group>"; };
-		79EA25895CE1A0FA493E238C /* Pods-Telnyx Meet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telnyx Meet.debug.xcconfig"; path = "Target Support Files/Pods-Telnyx Meet/Pods-Telnyx Meet.debug.xcconfig"; sourceTree = "<group>"; };
-		D4799B23054764CC41B96B41 /* Pods_Telnyx_Meet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Telnyx_Meet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		322F7885210F607C72CB059C /* Pods_Telnyx_Meet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Telnyx_Meet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3BE351B22CB7C9F2006A9DC7 /* TelnyxVideoSdk.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = TelnyxVideoSdk.xcframework; path = Pods/TelnyxVideoSdk/build/releases/TelnyxVideoSdk.xcframework; sourceTree = "<group>"; };
+		8CF24062848CF3E6056B6361 /* Pods-Telnyx Meet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telnyx Meet.debug.xcconfig"; path = "Target Support Files/Pods-Telnyx Meet/Pods-Telnyx Meet.debug.xcconfig"; sourceTree = "<group>"; };
+		C64FE0CE9C8AF23F15E28544 /* Pods-Telnyx Meet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Telnyx Meet.release.xcconfig"; path = "Target Support Files/Pods-Telnyx Meet/Pods-Telnyx Meet.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,7 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55883A74A3C0057CC35B51D4 /* Pods_Telnyx_Meet.framework in Frameworks */,
+				72EC1D67D7596D58D2EB7605 /* Pods_Telnyx_Meet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,7 +115,7 @@
 				0453E5A427E9612F00361B18 /* Telnyx Meet */,
 				0453E5A327E9612F00361B18 /* Products */,
 				E2FBB6CB710EEC778DC23D63 /* Pods */,
-				3984DBE129AB5F747BA15231 /* Frameworks */,
+				36C91810A6BECFCC768F8C9D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -229,10 +230,11 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
-		3984DBE129AB5F747BA15231 /* Frameworks */ = {
+		36C91810A6BECFCC768F8C9D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D4799B23054764CC41B96B41 /* Pods_Telnyx_Meet.framework */,
+				3BE351B22CB7C9F2006A9DC7 /* TelnyxVideoSdk.xcframework */,
+				322F7885210F607C72CB059C /* Pods_Telnyx_Meet.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -240,8 +242,8 @@
 		E2FBB6CB710EEC778DC23D63 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				79EA25895CE1A0FA493E238C /* Pods-Telnyx Meet.debug.xcconfig */,
-				24CC4831990AB8FA8D5A4458 /* Pods-Telnyx Meet.release.xcconfig */,
+				8CF24062848CF3E6056B6361 /* Pods-Telnyx Meet.debug.xcconfig */,
+				C64FE0CE9C8AF23F15E28544 /* Pods-Telnyx Meet.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -253,11 +255,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0453E5B627E9613200361B18 /* Build configuration list for PBXNativeTarget "Telnyx Meet" */;
 			buildPhases = (
-				0BD9A7C561E3934F03C30F71 /* [CP] Check Pods Manifest.lock */,
+				8A3E26ADAD7272FE5A6BD4C3 /* [CP] Check Pods Manifest.lock */,
 				0453E59E27E9612F00361B18 /* Sources */,
 				0453E59F27E9612F00361B18 /* Frameworks */,
 				0453E5A027E9612F00361B18 /* Resources */,
-				F8AC62627C541654DB3675FD /* [CP] Embed Pods Frameworks */,
+				05A53F77BD9C521EE8BADF51 /* [CP] Embed Pods Frameworks */,
+				B0DD91AB1E4677A752E4A9DC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -319,7 +322,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0BD9A7C561E3934F03C30F71 /* [CP] Check Pods Manifest.lock */ = {
+		05A53F77BD9C521EE8BADF51 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Telnyx Meet/Pods-Telnyx Meet-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Telnyx Meet/Pods-Telnyx Meet-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Telnyx Meet/Pods-Telnyx Meet-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8A3E26ADAD7272FE5A6BD4C3 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -341,21 +361,21 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F8AC62627C541654DB3675FD /* [CP] Embed Pods Frameworks */ = {
+		B0DD91AB1E4677A752E4A9DC /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Telnyx Meet/Pods-Telnyx Meet-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Telnyx Meet/Pods-Telnyx Meet-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Telnyx Meet/Pods-Telnyx Meet-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Telnyx Meet/Pods-Telnyx Meet-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Telnyx Meet/Pods-Telnyx Meet-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Telnyx Meet/Pods-Telnyx Meet-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -540,14 +560,14 @@
 		};
 		0453E5B727E9613200361B18 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 79EA25895CE1A0FA493E238C /* Pods-Telnyx Meet.debug.xcconfig */;
+			baseConfigurationReference = 8CF24062848CF3E6056B6361 /* Pods-Telnyx Meet.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = YKUVNPU9FS;
 				ENABLE_BITCODE = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Telnyx Meet/Info.plist";
@@ -575,14 +595,14 @@
 		};
 		0453E5B827E9613200361B18 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 24CC4831990AB8FA8D5A4458 /* Pods-Telnyx Meet.release.xcconfig */;
+			baseConfigurationReference = C64FE0CE9C8AF23F15E28544 /* Pods-Telnyx Meet.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = YKUVNPU9FS;
 				ENABLE_BITCODE = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Telnyx Meet/Info.plist";
